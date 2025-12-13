@@ -1,0 +1,134 @@
+/* Preloader.css */
+.preloader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Premium dark background for contrast or keep light if requested, assuming light per context */
+    background-color: #FFF9EA;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /* Clean fade out for the container */
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    /* Important for the drag from outside effect */
+    padding: 20px;
+}
+
+/* Wrapper to handle the enter and exit separately if needed */
+.logo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: zoomAndVanish 1s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+    animation-delay: 2.5s;
+    /* Happens after logo settles and tagline appears */
+}
+
+/* Logo Animation - "Drag" from left */
+.preloader-logo {
+    width: 50%;
+    max-width: 500px;
+    min-width: 250px;
+    height: auto;
+
+    /* Start off-screen left */
+    transform: translateX(-150%);
+
+    /* "Drag" effect: Fast enter with a heavy stop */
+    animation: dragIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.15));
+}
+
+/* Tagline underneath */
+.preloader-tagline {
+    font-family: 'Outfit', 'Inter', sans-serif;
+    /* Using a more modern font if available */
+    font-size: 1.2rem;
+    color: #1a1a1a;
+    margin-top: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+
+    /* Elegant rise */
+    animation: taglineRise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation-delay: 1.2s;
+    /* Wait for drag to finish */
+
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.preloader-hidden {
+    opacity: 0;
+    pointer-events: none;
+    /* transform: scale(1.1); Subtle expansion on exit */
+}
+
+/* 
+   Animation Definitions 
+*/
+
+@keyframes dragIn {
+    0% {
+        transform: translateX(-150%) skewX(-10deg);
+        /* Skew for speed illusion */
+        opacity: 0;
+    }
+
+    60% {
+        transform: translateX(5%) skewX(2deg);
+        /* Overshoot slightly */
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(0) skewX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes taglineRise {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoomAndVanish {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.8);
+        /* "Fox go inside" - zooming down/away */
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .preloader-logo {
+        width: 70%;
+    }
+
+    .preloader-tagline {
+        font-size: 0.9rem;
+        letter-spacing: 0.2em;
+    }
+}

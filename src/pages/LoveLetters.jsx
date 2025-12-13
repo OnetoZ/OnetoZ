@@ -1,41 +1,40 @@
-// This code is the same as the last response, confirmed to meet the free-floating requirement.
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
-const LoveLetters = () => {
-  // --- Testimonial Data (Expanded to ~20) ---
+const TestimonialSection = () => {
+  // --- Testimonial Data ---
   const allTestimonials = [
     {
-      quote: "The impact of Lavender has been enormous. Our sellers are writing emails in half the time and getting twice as many replies.",
-      name: "Kyle Coleman",
-      role: "Formerly CMO at Clari",
+      quote: "The strategic roadmap OnetoZ built was instrumental. Minimal design, maximal impact is truly their philosophy.",
+      name: "Sanjay Raj",
+      role: "E-Commerce Founder",
       avatar: "https://i.pravatar.cc/80?img=12",
     },
     {
-      quote: "As an SDR, I like that it keeps me honest when I wax poetic. And it upped our team's response rate.",
-      name: "Robby G.",
-      role: "Sales Development Representative",
+      quote: "Our new website functions like a complete 'Digital Growth Engine.' We saw a 30% jump in local SEO performance within a month.",
+      name: "Priya Sharma",
+      role: "Restaurant Chain Owner, TN",
       avatar: "https://i.pravatar.cc/80?img=32",
     },
     {
-      quote: "Easy to set up, incredibly useful insights, makes the cold email writing process much more focused on data and results than guessing.",
-      name: "Sydney Senior",
-      role: "Account Executive at Deer",
+      quote: "The personalized consulting focused us entirely on conversion tracking and quantifiable ROI. No more guessing games.",
+      name: "Gautam Rao",
+      role: "FinTech Strategist",
       avatar: "https://i.pravatar.cc/80?img=48",
     },
     {
-      quote: "Lavender helps us edit and generate our sales copy to help pipeline velocity. More meetings, more opportunities, more closed won!",
-      name: "Erin Holtz",
-      role: "Senior Account Executive @ Paro.ai",
+      quote: "OnetoZ gave us a competitive edge in the Tamil Nadu market. Their industry focus is unmatched.",
+      name: "Anjali Menon",
+      role: "Hospitality Group CEO",
       avatar: "https://i.pravatar.cc/80?img=6",
     },
     {
-      quote: "Lavender brings in more meetings for me as a BDR and helps my team. Makes me look super cool in front of my boss when I get email replies.",
+      quote: "Truly world-class digital product design. Effortless, timeless, and completely centered around our users.",
       name: "Heidi B.",
       role: "Director of Business Development",
       avatar: "https://i.pravatar.cc/80?img=18",
     },
     {
-      quote: "Better outbounding, confidence in email structure and content, and better reply rates.",
+      quote: "Exceptional mobile performance and backend robustness. A full-stack solution that works flawlessly.",
       name: "Dimitra Spiliotopoulou",
       role: "Head of Sales at Indico Labs",
       avatar: "https://i.pravatar.cc/80?img=28",
@@ -76,65 +75,22 @@ const LoveLetters = () => {
       role: "Sales Director",
       avatar: "https://i.pravatar.cc/80?img=50",
     },
-    {
-      quote: "The analytics are fantastic, helping us fine-tune our messaging for maximum impact.",
-      name: "David Kim",
-      role: "Growth Marketer",
-      avatar: "https://i.pravatar.cc/80?img=60",
-    },
-    {
-      quote: "Our sales reps love it! It's intuitive, saves time, and most importantly, gets results.",
-      name: "Sophia Chen",
-      role: "Account Manager",
-      avatar: "https://i.pravatar.cc/80?img=70",
-    },
-    {
-      quote: "Integrating Lavender was seamless, and the ROI was almost immediate. A must-have for any sales team.",
-      name: "Daniel Lee",
-      role: "Founder & CEO",
-      avatar: "https://i.pravatar.cc/80?img=80",
-    },
-    {
-      quote: "The suggestions are always spot-on. It's like having a senior AE always looking over your shoulder.",
-      name: "Emily Clark",
-      role: "Sales Development Rep",
-      avatar: "https://i.pravatar.cc/80?img=90",
-    },
-    {
-      quote: "Transforms our cold outreach from a guessing game to a data-driven strategy. Impressive tool!",
-      name: "Michael Brown",
-      role: "Head of Marketing",
-      avatar: "https://i.pravatar.cc/80?img=95",
-    },
-    {
-      quote: "Unlocks new levels of efficiency and effectiveness in our email campaigns. Couldn't do without it now.",
-      name: "Jessica Taylor",
-      role: "Senior AE",
-      avatar: "https://i.pravatar.cc/80?img=55",
-    },
-    {
-      quote: "The training resources are excellent, and the tool itself is incredibly user-friendly. Top-notch product.",
-      name: "Ryan Wilson",
-      role: "Sales Enablement Specialist",
-      avatar: "https://i.pravatar.cc/80?img=65",
-    },
-    {
-      quote: "Boosted our team's confidence and skill in writing impactful sales emails. The results speak for themselves.",
-      name: "Laura Martinez",
-      role: "Regional Sales Manager",
-      avatar: "https://i.pravatar.cc/80?img=75",
-    },
   ];
 
-  // --- Drag-to-Scroll Logic ---
+  // --- Refs and State for Scroll/Drag Logic ---
   const trackRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  
+  // Ref to store the total rotation applied to the scroll track
+  const totalRotationRef = useRef(0);
+  // Ref to track the previous scroll position
+  const lastScrollLeftRef = useRef(0);
 
+  // --- Drag Handlers ---
   const handleMouseDown = (e) => {
     setIsDragging(true);
-    // Use clientX for position relative to the visible window
     setStartX(e.clientX);
     setScrollLeft(trackRef.current.scrollLeft);
     e.currentTarget.style.cursor = 'grabbing';
@@ -157,227 +113,296 @@ const LoveLetters = () => {
     const walk = (x - startX) * 1.5; // Scroll speed multiplier
     trackRef.current.scrollLeft = scrollLeft - walk;
   };
+  
+  // --- ROLLING TIRE ANIMATION LOGIC (FIX) ---
+  const handleScroll = useCallback(() => {
+    const currentScrollLeft = trackRef.current.scrollLeft;
+    
+    // Calculate how much the scroll position has changed
+    const scrollDelta = currentScrollLeft - lastScrollLeftRef.current;
+    
+    // A multiplier to tune the speed of rotation relative to the scroll distance.
+    // Negative sign because scrolling right (positive delta) means the box should rotate clockwise (negative Z rotation).
+    const rotationMultiplier = -0.08; 
+    
+    // Update the total rotation
+    totalRotationRef.current += scrollDelta * rotationMultiplier;
+    
+    // Apply the rotation to all card containers
+    const cards = trackRef.current.querySelectorAll('.testimonial-card');
+    cards.forEach(card => {
+        // We use the initial rotation stored in the CSS variable (which accounts for the wavy look)
+        // and add the dynamic rolling rotation.
+        const initialRotation = parseFloat(card.dataset.initialRotation || 0);
+        card.style.transform = `rotateZ(${initialRotation + totalRotationRef.current}deg)`;
+    });
+    
+    // Update the last scroll position
+    lastScrollLeftRef.current = currentScrollLeft;
+    
+  }, []);
 
-  // --- Intersection Observer Logic for Entrance Animation ---
+  useEffect(() => {
+    const trackElement = trackRef.current;
+    if (trackElement) {
+      // Initialize last scroll position
+      lastScrollLeftRef.current = trackElement.scrollLeft;
+      
+      // Attach scroll listener
+      trackElement.addEventListener('scroll', handleScroll);
+    }
+    
+    return () => {
+      if (trackElement) {
+        trackElement.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [handleScroll]);
+
+  
+  // --- Entrance Animation Logic ---
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            // Stop observing once it's visible
-            observer.unobserve(entry.target);
+          } else {
+            // Re-animate on scroll back
+            entry.target.classList.remove('is-visible'); 
           }
         });
       },
-      {
-        // Use null for root to observe relative to the viewport
-        root: null, 
-        rootMargin: '0px',
-        threshold: 0.5, // Trigger when 50% of the card is visible
-      }
+      { root: null, rootMargin: '0px', threshold: 0.2 } 
     );
 
-    // Delay setting up the observer slightly to ensure DOM is ready
     const timer = setTimeout(() => {
-        const cardWrappers = document.querySelectorAll('.love-card-wrapper');
+        const cardWrappers = document.querySelectorAll('.card-container');
         cardWrappers.forEach((wrapper) => {
             observer.observe(wrapper);
         });
     }, 100);
-
 
     return () => {
         clearTimeout(timer);
         observer.disconnect();
     };
   }, []); 
+  
+  // Initial card rotations (for the natural wavy look)
+  const initialRotations = [-3, 1, -2, 3]; 
 
+  // --- Render ---
   return (
-    <div className="love-letters-page">
-      {/* Love Letters Section (Header is still centered) */}
-      <div className="love-letters-header-section">
-        <div className="love-letters-header">
-          <h1 className="love-letters-title" data-text="Love Letters">Love Letters</h1>
-          <p className="love-letters-description">
-            We cherish each customer message as a heartfelt love letter your trust inspires our unwavering commitment to excellence and fuels our passion to exceed expectations
-          </p>
-        </div>
+    <div className="feedback-section">
+      {/* Increased gap from previous section */}
+      <div className="feedback-header-content">
+        <h1 className="feedback-title">Client Testimonials</h1>
+        <p className="feedback-description">
+          We cherish each customer message as a heartfelt vote of confidence. Your trust inspires our unwavering commitment to excellence and fuels our passion to exceed expectations.
+        </p>
       </div>
       
-      {/* Marquee Love Cards - FREE-FLOATING, FULL-WIDTH, SCROLLABLE */}
-      <div className="love-marquee-container">
+      {/* Horizontal Scroll Track */}
+      <div className="feedback-marquee-container">
         <div 
-          className="love-track"
+          className="feedback-track"
           ref={trackRef}
           onMouseDown={handleMouseDown}
           onMouseLeave={handleMouseLeave}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
         >
-          {allTestimonials.map((t, i) => (
-            <div key={i} className="love-card-wrapper">
-              <div className={`love-card love-${(i % 4) + 1}`}>
-                <div className="love-quote">"{t.quote}"</div>
-                <div className="love-meta">
-                  <img className="love-avatar" src={t.avatar} alt={t.name} />
-                  <div className="love-info">
-                    <div className="love-name">{t.name}</div>
-                    <div className="love-role">{t.role}</div>
+          {allTestimonials.map((t, i) => {
+            const initialRotation = initialRotations[i % initialRotations.length];
+            return (
+              <div 
+                  key={i} 
+                  className="card-container"
+                  style={{ '--animation-delay': `${i * 0.05}s` }}
+              >
+                <div 
+                  className={`testimonial-card card-color-${(i % 4) + 1}`}
+                  data-initial-rotation={initialRotation}
+                  style={{ transform: `rotateZ(${initialRotation}deg)` }}
+                >
+                  <div className="testimonial-quote">"{t.quote}"</div>
+                  <div className="testimonial-meta">
+                    <img className="testimonial-avatar" src={t.avatar} alt={t.name} />
+                    <div className="testimonial-info">
+                      <div className="testimonial-name">{t.name}</div>
+                      <div className="testimonial-role">{t.role}</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       <style>{`
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        .love-letters-page {
-          min-height: 100vh;
+        /* --- General Setup and Spacing (Increased Gap) --- */
+        .feedback-section {
+          min-height: 80vh;
           background-color: #FFF9EA;
           color: #222;
           font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-          /* Critical for allowing children to use 100vw without triggering page scrollbars */
           overflow-x: hidden; 
+          padding-top: 180px; /* Increased gap */
+          padding-bottom: 120px;
         }
 
-        /* --- Header Styles (Max-width retained for centering text) --- */
-        .love-letters-header-section {
+        /* --- Header Styles --- */
+        .feedback-header-content {
           max-width: 1280px;
           margin: 0 auto;
-          padding: 120px 32px 100px;
+          padding: 0 32px 80px;
+          text-align: center; 
         }
-        .love-letters-header { text-align: center; }
-        .love-letters-title { font-size: 72px; font-weight: 700; margin-bottom: 40px; color: #222; letter-spacing: -1.5px; text-shadow: 0 3px 2px rgba(0,0,0,0.45); }
-        .love-letters-description { font-size: 18px; max-width: 750px; margin: 0 auto; line-height: 1.7; color: #222; font-weight: 400; }
+        .feedback-title { 
+            font-size: 72px; 
+            font-weight: 700; 
+            margin-bottom: 30px; 
+            color: #222; 
+            letter-spacing: -1.5px;
+            text-shadow: 0 3px 2px rgba(0,0,0,0.1);
+        }
+        .feedback-description { 
+            font-size: 18px; 
+            max-width: 750px; 
+            margin: 0 auto; 
+            line-height: 1.7; 
+            color: #444; 
+            font-weight: 400; 
+        }
 
-        /* --- Marquee Container for Full Width (THE KEY TO FREE-FLOATING) --- */
-        .love-marquee-container {
-            width: 100vw; /* Take the full viewport width */
-            /* This breaks the container out of any parent max-width and aligns it to the edge */
+        /* --- Marquee/Scroll Container --- */
+        .feedback-marquee-container {
+            width: 100vw; 
             margin-left: calc(50% - 50vw); 
-            padding-bottom: 120px;
         }
 
-        /* --- Scrollable Track --- */
-        .love-track { 
+        /* --- Scrollable Track with Fixed Rotation --- */
+        .feedback-track { 
             display: flex; 
             overflow-x: scroll; 
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch; 
             cursor: grab; 
-            
-            /* Crucial: Remove internal padding to let cards touch the edge */
-            padding-left: 0; 
-            padding-right: 0;
-            padding:50px 0;
+            padding: 50px 0;
             
             /* Hide scrollbar */
             scrollbar-width: none;
         }
-        .love-track::-webkit-scrollbar { display: none; }
+        .feedback-track::-webkit-scrollbar { display: none; }
         
-        /* --- Card Wrapper & Entrance Animation --- */
-        .love-card-wrapper {
+        /* --- Card Wrapper and Entrance Animation --- */
+        .card-container {
             position: relative;
             flex-shrink: 0;
             
-            /* Initial animation state */
+            /* Entrance animation state */
             opacity: 0;
-            transform: scale(0.95) translateY(30px);
-            transition: opacity 800ms ease-out, transform 800ms cubic-bezier(0.175, 0.885, 0.32, 1.27);
+            transform: scale(0.95) translateY(50px);
+            transition: opacity 1000ms ease-out, transform 1000ms cubic-bezier(0.175, 0.885, 0.32, 1.27);
+            transition-delay: var(--animation-delay);
             
-            /* Overlap spacing */
-            margin-right: -50px; 
+            margin-right: -40px; /* Overlap cards */
         }
         
-        /* Pushes the FIRST card slightly off-screen to start the "flow" */
-        .love-card-wrapper:first-child {
-            margin-left: -50px; 
+        .card-container:first-child {
+            margin-left: 32px; 
+        }
+        .card-container:last-child {
+            margin-right: 64px; 
         }
 
-        /* Final state when visible (triggered by Intersection Observer) */
-        .love-card-wrapper.is-visible {
+        .card-container.is-visible {
             opacity: 1;
             transform: scale(1) translateY(0);
         }
 
-        /* Z-index for smooth overlap appearance */
-        .love-card-wrapper:nth-child(4n + 1) .love-card { z-index: 4; } 
-        .love-card-wrapper:nth-child(4n + 2) .love-card { z-index: 3; } 
-        .love-card-wrapper:nth-child(4n + 3) .love-card { z-index: 2; }
-        .love-card-wrapper:nth-child(4n + 0) .love-card { z-index: 1; }
-
-        /* Ensure the last card has space to scroll fully into view */
-        .love-card-wrapper:last-child {
-            margin-right: 32px; 
-        }
-
-        /* --- Individual Card Styles (Organic Shape, Hover) --- */
-        .love-card {
-          width: 380px; 
-          height: 380px; 
+        /* --- Individual Card Styles (Organic Shape, Hover, and Dynamic Rotation setup) --- */
+        .testimonial-card {
+          width: 360px; 
+          height: 360px; 
           padding: 40px 32px; 
-          box-shadow: 0 22px 48px rgba(0,0,0,0.18);
+          box-shadow: 0 15px 30px rgba(0,0,0,0.1);
           cursor: pointer;
           display: flex; 
           flex-direction: column;
           justify-content: space-between;
+          
+          /* Only transition on properties NOT controlled by scroll (box-shadow, hover transform) */
           transition: box-shadow 0.3s ease, transform 0.3s ease; 
           
-          /* Organic Border Radius */
           border-top-left-radius: 40px 60px;
           border-top-right-radius: 50px 30px;
           border-bottom-right-radius: 60px 40px;
           border-bottom-left-radius: 30px 50px;
+          
+          will-change: transform; /* Performance optimization for rotation */
+          
+          /* Initial rotation is set inline, dynamic rotation added via JS scroll handler */
         }
         
-        /* Base rotation on the card itself */
-        .love-1 { background: #CDB4FF; transform: rotate(-3deg); }
-        .love-2 { background: #FDC5F5; transform: rotate(1deg); }
-        .love-3 { background: #C7F9CC; transform: rotate(-2deg); }
-        .love-4 { background: #BDE0FE; transform: rotate(3deg); }
+        /* Color themes */
+        .card-color-1 { background: #E9DFFB; } 
+        .card-color-2 { background: #FFDDE2; } 
+        .card-color-3 { background: #D6F6D9; } 
+        .card-color-4 { background: #E5F6FF; } 
         
-        /* Hover Effect: Lift and straighten */
-        .love-card:hover { 
-            transform: rotate(0deg) scale(1.05) translateY(-10px); 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+        /* Hover Effect: LIFT UP and STRAIGHTEN */
+        .testimonial-card:hover { 
+            /* This is the fix: Override the ongoing dynamic rotation and apply a static, lifted transform */
+            transform: rotateZ(0deg) scale(1.05) translateY(-10px) !important; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
             z-index: 100 !important; 
         }
         
-        /* --- Inner Card Content (Font/Meta styles) --- */
-        .love-quote { font-size: 24px; line-height: 1.4; color: #111; letter-spacing: -0.2px; margin-bottom: 20px; }
-        .love-meta { display: flex; align-items: center; gap: 14px; margin-top: auto; }
-        .love-avatar { width: 48px; height: 48px; border-radius: 9999px; box-shadow: 0 6px 12px rgba(0,0,0,0.18); object-fit: cover; }
-        .love-name { font-weight: 700; color: #111; }
-        .love-role { color: #222; opacity: .9; font-weight: 500; }
+        /* --- Inner Card Content --- */
+        .testimonial-quote { 
+            font-size: 22px; 
+            line-height: 1.4; 
+            color: #111; 
+            letter-spacing: -0.2px; 
+            margin-bottom: 20px; 
+        }
+        .testimonial-meta { display: flex; align-items: center; gap: 14px; margin-top: auto; }
+        .testimonial-avatar { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 9999px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            object-fit: cover; 
+        }
+        .testimonial-name { font-weight: 700; color: #111; }
+        .testimonial-role { color: #333; opacity: .8; font-weight: 500; font-size: 14px; }
 
         /* --- Responsive Adjustments --- */
-        @media (max-width: 1024px) {
-          .love-card-wrapper { margin-right: -40px; }
-          .love-card { width: 320px; height: 320px; padding: 30px 25px; }
-          .love-quote { font-size: 20px; line-height: 1.35; }
+        @media (max-width: 992px) {
+          .feedback-title { font-size: 56px; }
+          .card-container { margin-right: -30px; }
+          .card-container:first-child { margin-left: 20px; }
+          .card-container:last-child { margin-right: 40px; }
+          .testimonial-card { width: 320px; height: 320px; padding: 30px 25px; }
+          .testimonial-quote { font-size: 20px; line-height: 1.35; }
         }
 
         @media (max-width: 768px) {
-          .love-letters-title { font-size: 48px; }
-          .love-letters-header-section { padding: 80px 20px 60px; }
-          .love-card-wrapper { margin-right: -30px; }
-          .love-card-wrapper:first-child { margin-left: -30px; }
-          .love-card-wrapper:last-child { margin-right: 20px; }
-          .love-card { width: 280px; height: 280px; padding: 25px 20px; }
-          .love-quote { font-size: 18px; line-height: 1.4; }
+          .feedback-title { font-size: 40px; }
+          .feedback-header-content { padding-bottom: 50px; }
+          .feedback-section { padding-top: 100px; }
+          .card-container { margin-right: -20px; }
+          .card-container:first-child { margin-left: 10px; }
+          .card-container:last-child { margin-right: 30px; }
+          .testimonial-card { width: 280px; height: 280px; padding: 25px 20px; }
+          .testimonial-quote { font-size: 18px; line-height: 1.4; }
         }
       `}</style>
     </div>
   );
 };
 
-export default LoveLetters;
+export default TestimonialSection;

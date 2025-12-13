@@ -1,51 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Check, Clock, Video, Globe } from 'lucide-react';
+
+// --- Theme Colors matched to OnetoZ's light beige/dark text theme ---
+const PRIMARY_COLOR_DARK = '#222222'; // Dark text/buttons
+const PRIMARY_COLOR_LIGHT = '#EFEAD4'; // Light Beige for button backgrounds
+const ACCENT_COLOR_ACCENT = '#A38B57'; // Soft Gold/Brown for subtle accents
+const BODY_BG = '#FFF9EA'; // Main Body Background
+const CARD_BG = '#ffffff'; // Card Background
 
 const MeetingSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [timeSlots, setTimeSlots] = useState([]);
+  
+  // Use useRef for the section and text elements for Intersection Observer
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
 
-  const generateTimeSlots = (date) => {
+  // --- Utility Functions ---
+
+  const generateTimeSlots = () => {
+    // Generate simple dummy slots for demonstration
     const slots = [];
-    const startHour = 9;
-    const endHour = 17;
+    const availableHours = [9, 10, 11, 14, 15, 16]; // 9 AM, 10 AM, 11 AM, 2 PM, 3 PM, 4 PM
     
-    for (let hour = startHour; hour < endHour; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const time = new Date();
-        time.setHours(hour, minute, 0, 0);
-        const timeString = time.toLocaleTimeString('en-US', { 
-          hour: 'numeric', 
-          minute: '2-digit',
-          hour12: true 
-        });
-        slots.push(timeString);
-      }
-    }
+    availableHours.forEach(hour => {
+      slots.push(`${hour % 12 === 0 ? 12 : hour % 12}:00 ${hour >= 12 ? 'PM' : 'AM'}`);
+      slots.push(`${hour % 12 === 0 ? 12 : hour % 12}:30 ${hour >= 12 ? 'PM' : 'AM'}`);
+    });
     return slots;
   };
-
+  
   const getDaysInMonth = (date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
+    // getDay() returns 0 for Sunday, 1 for Monday. We want Monday to be 0 for CSS grid.
+    const startingDayOfWeek = (firstDay.getDay() + 6) % 7; 
     
     const days = [];
-    
-    // Add empty cells for days before the first day of the month
-    for (let i = 0; i < startingDayOfWeek; i++) {
-      days.push(null);
-    }
-    
-    // Add days of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      days.push(day);
-    }
+    for (let i = 0; i < startingDayOfWeek; i++) { days.push(null); }
+    for (let day = 1; day <= daysInMonth; day++) { days.push(day); }
     
     return days;
   };
@@ -53,15 +51,18 @@ const MeetingSection = () => {
   const isDateAvailable = (day) => {
     if (!day) return false;
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const checkDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    
+    // Check if date is not in the past
     return checkDate >= today;
   };
 
+  // --- Handlers ---
   const handleDateSelect = (day) => {
     if (isDateAvailable(day)) {
       setSelectedDate(day);
       setSelectedTime(null);
-      setTimeSlots(generateTimeSlots());
     }
   };
 
@@ -74,66 +75,78 @@ const MeetingSection = () => {
       const meetingDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), selectedDate);
       const meetingDateTime = `${meetingDate.toDateString()} at ${selectedTime}`;
       
-      // Create email body
       const emailBody = `Hi OnetoZ Team,
 
 I would like to schedule a 25-minute strategy call.
 
 Preferred Date & Time: ${meetingDateTime}
 
-Please confirm this time slot works for you.
+I look forward to your confirmation.
 
 Best regards`;
 
-      // Open email client
       const emailLink = `mailto:OnetoZsolution@gmail.com?subject=Meeting Request - 25-Minute Strategy Call&body=${encodeURIComponent(emailBody)}`;
       window.open(emailLink);
     }
   };
+  
+  const navigateMonth = (amount) => {
+    setSelectedDate(null);
+    setSelectedTime(null);
+    setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + amount));
+  };
 
+  // --- Scroll Animation Effect (Parallax/Scroll Reveal) ---
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
+          // Re-trigger animation on scroll back into view
+          setIsVisible(entry.isIntersecting); 
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 } // Trigger when 20% of the section is visible
     );
 
-    const element = document.querySelector('.meeting-section');
-    if (element) observer.observe(element);
+    if (sectionRef.current) observer.observe(sectionRef.current);
 
     return () => observer.disconnect();
   }, []);
 
+  // --- Data for Rendering ---
   const days = getDaysInMonth(currentMonth);
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
+  const timeSlots = generateTimeSlots();
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const currentMonthName = monthNames[currentMonth.getMonth()];
+  const currentYear = currentMonth.getFullYear();
+  const titleWords = "Ready to Bring Your Vision to Life?".split(' ');
+  
   return (
-    <div className="meeting-section">
+    <div ref={sectionRef} className={`meeting-section ${isVisible ? 'is-visible' : ''}`}>
       <div className="meeting-container">
         <div className="meeting-content">
+          
+          {/* Left Text Content with Animation */}
           <div className="meeting-text">
-            <h2 className="meeting-title">Ready to Bring Your Vision to Life?</h2>
+            <h2 className="meeting-title" ref={titleRef}>
+              {titleWords.map((word, index) => (
+                <span key={index} className="word-wrapper" style={{ '--word-delay': `${index * 0.08}s` }}>
+                  {word}
+                </span>
+              ))}
+            </h2>
             <div className="meeting-description">
-              <p>Every great project starts with a clear conversation.</p>
-              <p>We work with founders and teams who are serious about building something impactful. Schedule a short call to discuss your project goals, challenges, and roadmap.</p>
-              <p>Let's discuss your ideas, goals, and how we can help make them happen.</p>
-              <p>Calls are 25 minutes long — focused, practical, and completely commitment-free.</p>
+              <p style={{ '--p-delay': '0.8s' }} className="fade-in-p">Every great project starts with a <b>clear conversation.</b></p>
+              <p style={{ '--p-delay': '1.0s' }} className="fade-in-p">We work with founders and teams who are serious about building something impactful. Schedule a <b>short call to discuss</b> your project goals, challenges, and roadmap.</p>
+              <p style={{ '--p-delay': '1.2s' }} className="fade-in-p">Let's discuss your ideas, goals, and how we can help make them happen.</p>
+              <p style={{ '--p-delay': '1.4s' }} className="fade-in-p">Calls are <b>25 minutes long</b> — focused, practical, and completely commitment-free.</p>
             </div>
           </div>
           
+          {/* Right Scheduler Box */}
           <div className="meeting-scheduler">
-            <div className="scheduler-header">
-              <div className="meeting-icon">●</div>
+            <div className="scheduler-fixed-header">
+              <div className="meeting-icon-wrapper"><span className="meeting-icon">●</span></div>
               <div className="meeting-info">
                 <div className="company-name">OnetoZ</div>
                 <div className="meeting-title-scheduler">25-Minute Strategy Call</div>
@@ -145,81 +158,88 @@ Best regards`;
             
             <div className="meeting-details">
               <div className="detail-item">
-                <span className="detail-icon">✓</span>
+                <Check size={16} color={PRIMARY_COLOR_DARK} />
                 <span>Requires confirmation</span>
               </div>
               <div className="detail-item">
-                <span className="detail-icon">🕐</span>
+                <Clock size={16} color={PRIMARY_COLOR_DARK} />
                 <span>25m</span>
               </div>
               <div className="detail-item">
-                <span className="detail-icon">📹</span>
+                <Video size={16} color={PRIMARY_COLOR_DARK} />
                 <span>Google Meet</span>
               </div>
               <div className="detail-item">
-                <span className="detail-icon">🌍</span>
+                <Globe size={16} color={PRIMARY_COLOR_DARK} />
                 <span>Asia/Kolkata</span>
               </div>
             </div>
             
-            <div className="calendar-section">
-              <div className="calendar-header">
-                <button 
-                  className="nav-btn"
-                  onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-                >
-                  ‹
-                </button>
-                <h3 className="month-year">
-                  {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-                </h3>
-                <button 
-                  className="nav-btn"
-                  onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
-                >
-                  ›
-                </button>
-              </div>
+            {/* Scrollable Calendar/Time Container */}
+            <div className="calendar-time-scroll-container">
               
-              <div className="calendar-grid">
-                <div className="day-header">MON</div>
-                <div className="day-header">TUE</div>
-                <div className="day-header">WED</div>
-                <div className="day-header">THU</div>
-                <div className="day-header">FRI</div>
-                <div className="day-header">SAT</div>
-                <div className="day-header">SUN</div>
-                
-                {days.map((day, index) => (
-                  <button
-                    key={index}
-                    className={`calendar-day ${day === selectedDate ? 'selected' : ''} ${isDateAvailable(day) ? 'available' : 'unavailable'}`}
-                    onClick={() => handleDateSelect(day)}
-                    disabled={!isDateAvailable(day)}
+              {/* Calendar Section */}
+              <div className="calendar-section">
+                <div className="calendar-header">
+                  <button 
+                    className="nav-btn"
+                    onClick={() => navigateMonth(-1)}
                   >
-                    {day}
+                    ‹
                   </button>
-                ))}
-              </div>
-            </div>
-            
-            {selectedDate && (
-              <div className="time-section">
-                <div className="time-label">TIME</div>
-                <div className="time-slots">
-                  {timeSlots.map((time, index) => (
+                  <h3 className="month-year">
+                    {currentMonthName} {currentYear}
+                  </h3>
+                  <button 
+                    className="nav-btn"
+                    onClick={() => navigateMonth(1)}
+                  >
+                    ›
+                  </button>
+                </div>
+                
+                <div className="calendar-grid">
+                  <div className="day-header">MON</div>
+                  <div className="day-header">TUE</div>
+                  <div className="day-header">WED</div>
+                  <div className="day-header">THU</div>
+                  <div className="day-header">FRI</div>
+                  <div className="day-header">SAT</div>
+                  <div className="day-header">SUN</div>
+                  
+                  {days.map((day, index) => (
                     <button
                       key={index}
-                      className={`time-slot ${time === selectedTime ? 'selected' : ''}`}
-                      onClick={() => handleTimeSelect(time)}
+                      className={`calendar-day ${day === selectedDate ? 'selected' : ''} ${isDateAvailable(day) ? 'available' : 'unavailable'}`}
+                      onClick={() => handleDateSelect(day)}
+                      disabled={!isDateAvailable(day)}
                     >
-                      {time}
+                      {day}
                     </button>
                   ))}
                 </div>
               </div>
-            )}
+              
+              {/* Time Section (Only visible after date selection) */}
+              {selectedDate && (
+                <div className="time-section">
+                  <div className="time-label">TIME</div>
+                  <div className="time-slots">
+                    {timeSlots.map((time, index) => (
+                      <button
+                        key={index}
+                        className={`time-slot ${time === selectedTime ? 'selected' : ''}`}
+                        onClick={() => handleTimeSelect(time)}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             
+            {/* Fixed Schedule Button at the bottom */}
             {selectedDate && selectedTime && (
               <button className="schedule-btn" onClick={handleSchedule}>
                 Schedule Meeting
@@ -230,10 +250,18 @@ Best regards`;
       </div>
 
       <style>{`
+        /* --- General Layout & Colors --- */
         .meeting-section {
-          background-color: #FFF9EA;
+          background-color: ${BODY_BG};
           padding: 120px 32px;
           min-height: 100vh;
+          /* Initial state for Scroll Reveal */
+          opacity: 0;
+          transition: opacity 0.5s ease;
+        }
+
+        .meeting-section.is-visible {
+          opacity: 1;
         }
 
         .meeting-container {
@@ -243,265 +271,360 @@ Best regards`;
 
         .meeting-content {
           display: grid;
-          grid-template-columns: 1.2fr 0.8fr;
+          grid-template-columns: 1.3fr 0.7fr; /* Adjusted for better ratio */
           gap: 80px;
-          align-items: stretch;
-          min-height: 600px;
+          align-items: flex-start; /* Align content to the top */
+          min-height: 700px;
         }
 
+        /* --- Left Text Animation --- */
         .meeting-text {
+          /* Initial state for Scroll Reveal */
           opacity: 0;
           transform: translateY(30px);
-          transition: all 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+          transition: all 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.5s;
         }
 
-        .meeting-section.visible .meeting-text {
+        .meeting-section.is-visible .meeting-text {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Title Word-by-Word Animation */
+        .meeting-title {
+          font-size: 56px;
+          font-weight: 800;
+          color: ${PRIMARY_COLOR_DARK};
+          margin-bottom: 32px;
+          line-height: 1.1;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px 10px; /* Space between words */
+        }
+        
+        .word-wrapper {
+          display: inline-block;
+          overflow: hidden;
+          opacity: 0;
+          transform: translateY(100%);
+        }
+
+        .meeting-section.is-visible .word-wrapper {
+            animation: text-reveal 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+            animation-delay: var(--word-delay);
+        }
+
+        @keyframes text-reveal {
+            0% { opacity: 0; transform: translateY(100%); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Paragraph Staggered Fade-in */
+        .meeting-description p {
+          font-size: 20px;
+          line-height: 1.6;
+          color: #444;
+          margin-bottom: 24px;
+          font-weight: 400;
+        }
+        
+        .fade-in-p {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition-delay: var(--p-delay);
+        }
+
+        .meeting-section.is-visible .fade-in-p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* --- Right Scheduler Box --- */
+        .meeting-scheduler {
+          background: ${CARD_BG};
+          border-radius: 20px;
+          padding: 30px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          border: 1px solid ${PRIMARY_COLOR_LIGHT};
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.7s;
+          display: flex;
+          flex-direction: column;
+          max-height: 700px; /* Set max height */
+        }
+
+        .meeting-section.is-visible .meeting-scheduler {
           opacity: 1;
           transform: translateY(0);
         }
         
-        .meeting-section.visible {
-          opacity: 1;
-        }
-
-        .meeting-title {
-          font-size: 56px;
-          font-weight: 700;
-          color: #222;
-          margin-bottom: 32px;
-          line-height: 1.1;
-          font-family: 'Georgia', serif;
-        }
-
-        .meeting-description p {
-          font-size: 20px;
-          line-height: 1.6;
-          color: #333;
-          margin-bottom: 24px;
-          font-weight: 400;
-        }
-
-        .meeting-scheduler {
-          background: white;
-          border-radius: 24px;
-          padding: 32px;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-          opacity: 0;
-          transform: translateY(30px);
-          transition: all 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-        }
-
-        .meeting-section.visible .meeting-scheduler {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .scheduler-header {
+        /* Fixed Header/Details */
+        .scheduler-fixed-header {
           display: flex;
           gap: 16px;
-          margin-bottom: 24px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid #eee;
+          margin-bottom: 20px;
+        }
+
+        .meeting-icon-wrapper {
+            padding-top: 5px;
         }
 
         .meeting-icon {
-          width: 12px;
-          height: 12px;
-          background: #222;
+          width: 8px;
+          height: 8px;
+          background: ${PRIMARY_COLOR_DARK};
           border-radius: 50%;
-          margin-top: 8px;
+          display: block;
         }
 
         .company-name {
-          font-size: 16px;
-          color: #666;
-          margin-bottom: 8px;
+          font-size: 14px;
+          color: #777;
+          margin-bottom: 4px;
           font-weight: 500;
         }
 
         .meeting-title-scheduler {
-          font-size: 28px;
+          font-size: 24px;
           font-weight: 700;
-          color: #222;
-          margin-bottom: 12px;
+          color: ${PRIMARY_COLOR_DARK};
+          margin-bottom: 10px;
         }
 
         .meeting-description-scheduler {
-          font-size: 16px;
+          font-size: 14px;
           color: #666;
-          line-height: 1.5;
+          line-height: 1.4;
           font-weight: 400;
         }
 
         .meeting-details {
           display: flex;
           flex-direction: column;
-          gap: 12px;
-          margin-bottom: 32px;
+          gap: 8px;
+          margin-bottom: 20px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid #eee;
         }
 
         .detail-item {
           display: flex;
           align-items: center;
-          gap: 12px;
-          font-size: 16px;
+          gap: 10px;
+          font-size: 15px;
           color: #333;
           font-weight: 500;
         }
-
-        .detail-icon {
-          width: 16px;
-          text-align: center;
+        
+        /* Scrollable Container for Calendar/Time */
+        .calendar-time-scroll-container {
+            overflow-y: auto; /* This enables vertical scroll when content overflows */
+            padding-right: 15px; /* Add padding for scrollbar */
+            flex-grow: 1; /* Allow container to fill remaining space */
         }
-
+        
+        /* Styling the scrollbar (optional, but good for aesthetics) */
+        .calendar-time-scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .calendar-time-scroll-container::-webkit-scrollbar-thumb {
+            background-color: #ddd;
+            border-radius: 4px;
+        }
+        .calendar-time-scroll-container::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+        
+        /* Calendar Specific Styles */
         .calendar-section {
-          margin-bottom: 32px;
+          margin-bottom: 24px;
         }
 
         .calendar-header {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 24px;
+          margin-bottom: 16px;
         }
 
         .nav-btn {
           width: 32px;
           height: 32px;
           border: none;
-          background: #f5f5f5;
-          border-radius: 8px;
+          background: transparent;
+          border-radius: 50%;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 18px;
-          color: #333;
+          font-size: 20px;
+          color: ${PRIMARY_COLOR_DARK};
+          font-weight: 600;
+          transition: background 0.2s;
         }
 
         .nav-btn:hover {
-          background: #e5e5e5;
+          background: #f0f0f0;
         }
 
         .month-year {
-          font-size: 22px;
+          font-size: 18px;
           font-weight: 700;
-          color: #222;
+          color: ${PRIMARY_COLOR_DARK};
         }
 
         .calendar-grid {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
-          gap: 8px;
+          gap: 6px;
         }
 
         .day-header {
           text-align: center;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 700;
-          color: #666;
-          padding: 8px 0;
+          color: #777;
+          padding: 4px 0;
         }
 
         .calendar-day {
-          width: 40px;
-          height: 40px;
-          border: 1px solid #e5e5e5;
+          width: 38px;
+          height: 38px;
+          border: 1px solid #ddd;
           background: #f5f5f5;
           border-radius: 8px;
           cursor: pointer;
-          font-size: 16px;
-          color: #333;
+          font-size: 15px;
+          color: ${PRIMARY_COLOR_DARK};
           transition: all 0.2s ease;
-          font-weight: 500;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-
+        
+        /* Available, Hover, Selected States */
         .calendar-day.available:hover {
-          background: #e5e5e5;
+          border-color: ${ACCENT_COLOR_ACCENT};
         }
 
         .calendar-day.selected {
-          background: #222;
+          background: ${PRIMARY_COLOR_DARK};
           color: white;
+          border-color: ${PRIMARY_COLOR_DARK};
+          transform: scale(1.05);
         }
 
         .calendar-day.unavailable {
-          background: #f9f9f9;
+          background: ${CARD_BG};
           color: #ccc;
           cursor: not-allowed;
+          border-color: #f0f0f0;
         }
 
+        /* Time Selection Styles */
         .time-section {
-          margin-bottom: 24px;
+          padding-top: 16px;
+          border-top: 1px solid #eee;
         }
 
         .time-label {
           font-size: 16px;
           font-weight: 700;
-          color: #333;
+          color: ${PRIMARY_COLOR_DARK};
           margin-bottom: 16px;
         }
 
         .time-slots {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-          gap: 8px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
         }
 
         .time-slot {
           padding: 8px 12px;
-          border: 1px solid #e5e5e5;
-          background: white;
-          border-radius: 8px;
+          border: 2px solid ${PRIMARY_COLOR_LIGHT};
+          background: ${PRIMARY_COLOR_LIGHT};
+          border-radius: 10px;
           cursor: pointer;
           font-size: 14px;
-          color: #333;
+          color: ${PRIMARY_COLOR_DARK};
           transition: all 0.2s ease;
-          font-weight: 500;
+          font-weight: 600;
         }
 
         .time-slot:hover {
-          border-color: #222;
+          border-color: ${ACCENT_COLOR_ACCENT};
         }
 
         .time-slot.selected {
-          background: #222;
+          background: ${PRIMARY_COLOR_DARK};
           color: white;
-          border-color: #222;
+          border-color: ${PRIMARY_COLOR_DARK};
         }
 
+        /* Fixed Schedule Button */
         .schedule-btn {
           width: 100%;
-          padding: 16px;
-          background: #222;
+          padding: 14px;
+          background: ${PRIMARY_COLOR_DARK};
           color: white;
           border: none;
-          border-radius: 12px;
-          font-size: 18px;
+          border-radius: 10px;
+          font-size: 16px;
           font-weight: 700;
           cursor: pointer;
           transition: all 0.3s ease;
+          margin-top: 20px;
+          flex-shrink: 0; /* Ensures button does not shrink in scrollable content */
         }
 
         .schedule-btn:hover {
-          background: #333;
+          background: ${ACCENT_COLOR_ACCENT};
           transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        @media (max-width: 768px) {
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
           .meeting-content {
             grid-template-columns: 1fr;
             gap: 48px;
           }
 
           .meeting-title {
-            font-size: 36px;
+            font-size: 44px;
+          }
+          
+          .meeting-description p {
+              font-size: 18px;
           }
 
           .meeting-scheduler {
-            padding: 24px;
+            max-height: none; /* Remove max height on smaller screens */
           }
+        }
+        
+        @media (max-width: 576px) {
+            .meeting-title {
+                font-size: 32px;
+                line-height: 1.2;
+            }
+            .meeting-description p {
+                font-size: 16px;
+            }
+            .calendar-day {
+                width: 35px;
+                height: 35px;
+            }
+            .time-slot {
+                font-size: 13px;
+                padding: 6px 10px;
+            }
         }
       `}</style>
     </div>

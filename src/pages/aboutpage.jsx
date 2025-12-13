@@ -1,0 +1,101 @@
+import React from 'react';
+import Footer from './Footer'; 
+import ProfileSection from './ProfileSection'; 
+import './aboutpage.css'; 
+import ozLogo from './image/OZ logo.png'
+import './LandingPage.css'
+
+
+const AboutUsPage = () => {
+    const scrollToSection = (sectionId) => {
+        const element = document.getElementById(sectionId)
+        if (element) {
+            const offset = 80;
+            const elementPosition = element.getBoundingClientRect().top
+            const offsetPosition = elementPosition + window.pageYOffset - offset
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            })
+        }
+    }
+    
+    return (
+        <div className="about-us-page-wrapper">
+            {/* 1. Navigation Bar (As seen in your screenshots) */}
+            {/* <Navbar />  */}
+             <div className="lp-topBar lp-enter-up">
+                      {/* Small logo at the top (left) */}
+                      <img src={ozLogo} alt="OZ" className="lp-brandLogoSmall lp-pop" />
+                      <div className="lp-navPill">
+                        <div className="lp-navItem" onClick={() => window.location.href = '/'}>HOME</div>
+                        <div className="lp-navItem" onClick={() => window.location.href = '/'}>PROJECTS</div>
+                        <div className="lp-navItem" onClick={() => window.location.href = '/'}>PROCESS</div> 
+                        <div className="lp-navItem" onClick={() => window.location.href = '/'}>CONTACT</div>
+                        <div className="lp-navItem" onClick={() => scrollToSection('about-section')}>ABOUT US</div>
+                      </div>
+                      {/* 2x2 grid icon */}
+                      <div className="lp-gridWrap lp-pop">
+                        <span className="lp-gridSquare-top-left" />
+                        <span className="lp-gridSquare-top-right" />
+                        <span className="lp-gridSquare-bottom-left" />
+                        <span className="lp-gridSquare-bottom-right" />
+                      </div>
+                    </div>
+
+            {/* 2. Engaging Introduction Content */}
+            <section className="about-intro-section">
+                <div className="intro-content-container">
+                    <h1 className="intro-title">
+                        Connecting Minds, <span className="highlight-text">Creating Tomorrow</span>
+                    </h1>
+                    <p className="intro-subtitle">
+                        We are <b>OnetoZ:</b> Digital Growth Partners dedicated to turning bold visions into measurable business results for businesses in Tamil Nadu. Our philosophy is simple: **Minimal Design, Maximal Impact**.
+                    </p>
+                    
+                    <div className="value-cards">
+                        <div className="value-card">
+                            <span className="card-icon">🎯</span>
+                            <h3>Focus on ROI</h3>
+                            <p>Every strategy is measured by tangible business growth, not just vanity metrics.</p>
+                        </div>
+                        <div className="value-card">
+                            <span className="card-icon">🛠️</span>
+                            <h3>Full-Stack Expertise</h3>
+                            <p>From UI/UX design to deep-dive AI development, we handle the entire digital pipeline.</p>
+                        </div>
+                        <div className="value-card">
+                            <span className="card-icon">🤝</span>
+                            <h3>TN Market Experts</h3>
+                            <p>In-depth understanding of local SEO, customer journeys, and market specifics in Tamil Nadu.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                {/* Image Placeholder inspired by your reference images (Mygom/Better Invest engaging layouts) */}
+                <div className="intro-image-container">
+                     {/*  */}
+                     <p className="image-caption">The OnetoZ team in action, Coimbatore, TN.</p>
+                </div>
+            </section>
+            
+            <hr className="divider" />
+
+            {/* 3. The Animated Team Showcase */}
+            <section className="about-team-section">
+                <h2 className="team-section-title">Meet Our Digital Architects</h2>
+                <p className="team-section-subtitle">
+                    The passionate minds blending strategy, design, and code to build your Growth Engine. Scroll to meet the team.
+                </p>
+                <ProfileSection /> 
+            </section>
+
+            {/* 4. Enhanced Footer */}
+            <Footer />
+        </div>
+    );
+};
+
+export default AboutUsPage;
+

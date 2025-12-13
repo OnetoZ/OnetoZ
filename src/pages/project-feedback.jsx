@@ -1,76 +1,104 @@
-import React, { useState, useEffect } from 'react';
-import { X, Globe, Smartphone, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Globe, Smartphone, TrendingUp, ArrowRight } from 'lucide-react';
 
-// --- Constants ---
-const PRIMARY_COLOR_LIGHT = '#9cf600ff';
-const PRIMARY_COLOR_DARK = '#22c55e';
-const ACCENT_COLOR_DARK = '#171717';
-const CARD_BG = '#ffffff';
+// --- Theme Colors matched to OnetoZ's light beige/dark text theme ---
+const PRIMARY_COLOR_ACCENT = '#A38B57'; // Soft Gold/Brown for accents
+const PRIMARY_COLOR_LIGHT = '#EFEAD4'; // Light Beige for background
+const ACCENT_COLOR_DARK = '#222222'; // Dark text
+const CARD_BG = '#ffffff'; // Card background
 
-// --- Project Data (Streamlined to 3 categories) ---
+// --- Project Data with Breezy added and focus kept only on it ---
 const projects = [
     {
         id: 1,
         title: 'Full Stack Development',
-        icon: <Globe size={28} color={PRIMARY_COLOR_DARK} />,
+        icon: <Globe size={28} color={PRIMARY_COLOR_ACCENT} />,
         tagline: 'World-class web applications from front to back-end.',
         items: [
-            { name: 'E-commerce Platforms', description: 'Scalable solutions for retail and wholesale.', category: 'Web' },
-            { name: 'SaaS & Custom Dashboards', description: 'Bespoke tools for business operations.', category: 'Web' },
-            { name: 'CMS & Website Refactoring', description: 'Modernizing existing digital infrastructure.', category: 'Web' },
+            // The required original client
+            {
+                name: 'Breezy (Live)',
+                description: 'Full stack web development for an e-commerce platform.',
+                category: 'Web',
+                isFeatured: true,
+                link: 'https://breezynapkins.com' // Added link
+            },
+            // Remaining items are for category illustration
+            { name: 'Custom SaaS Solutions', description: 'Bespoke tools for business operations.', category: 'Web' },
+            { name: 'API Integrations', description: 'Secure and scalable third-party connections.', category: 'Web' },
         ]
     },
     {
         id: 2,
         title: 'Mobile App Development',
-        icon: <Smartphone size={28} color={PRIMARY_COLOR_DARK} />,
+        icon: <Smartphone size={28} color={PRIMARY_COLOR_ACCENT} />,
         tagline: 'Native and cross-platform apps for iOS and Android.',
         items: [
-            { name: 'Consumer Lifestyle Apps', description: 'Health, wellness, and social networking.', category: 'Mobile' },
-            { name: 'Enterprise & Utility Apps', description: 'Tools for internal processes and data collection.', category: 'Mobile' },
             { name: 'Prototyping & MVP Launch', description: 'Fast execution for new business ideas.', category: 'Mobile' },
+            { name: 'Enterprise Apps', description: 'Tools for internal processes and data collection.', category: 'Mobile' },
         ]
     },
     {
         id: 3,
         title: 'Digital Marketing & SEO',
-        icon: <TrendingUp size={28} color={PRIMARY_COLOR_DARK} />,
+        icon: <TrendingUp size={28} color={PRIMARY_COLOR_ACCENT} />,
         tagline: 'Data-driven strategies for measurable online growth.',
         items: [
-            { name: 'Local SEO & UX Optimization', description: 'Targeting specific markets in Tamil Nadu.', category: 'Marketing' },
-            { name: 'Conversion Rate Optimization (CRO)', description: 'Turning visitors into paying customers.', category: 'Marketing' },
-            { name: 'Content Strategy & Campaigns', description: 'Engaging content planning and execution.', category: 'Marketing' },
+            { name: 'Local SEO & CRO', description: 'Targeting specific markets in Tamil Nadu.', category: 'Marketing' },
+            { name: 'Content Strategy', description: 'Engaging content planning and execution.', category: 'Marketing' },
         ]
     },
 ];
 
-// --- Sub-Component: Project Card ---
-const ProjectCard = ({ project, onClick }) => {
+// ... (ProjectCard component remains unchanged)
+
+// --- Sub-Component: Project Card with Scroll Reveal Logic ---
+const ProjectCard = ({ project, onClick, index }) => {
+    const cardRef = useRef(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.unobserve(entry.target); // Stop observing once visible
+                }
+            },
+            {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2, // Trigger when 20% of the item is visible
+            }
+        );
+
+        if (cardRef.current) {
+            observer.observe(cardRef.current);
+        }
+
+        return () => {
+            if (cardRef.current) {
+                observer.unobserve(cardRef.current);
+            }
+        };
+    }, []);
+
     return (
-        <div 
-            className="project-card-outer group"
+        <div
+            ref={cardRef}
+            className={`project-card-outer group ${isVisible ? 'is-visible' : ''}`}
+            style={{ '--animation-delay': `${index * 0.1}s` }} // Staggered delay
             onClick={() => onClick(project)}
         >
             <div className="project-card">
-                {/* Fixed Content (Always Visible) */}
                 <div className="card-header">
                     {project.icon}
                     <h3 className="card-title">{project.title}</h3>
                 </div>
                 <p className="card-tagline">{project.tagline}</p>
-                <div className="card-cta">Explore Projects →</div>
-
-                {/* Hover Content (Mimicking 4th image pop-up) */}
-                <div className="card-hover-details">
-                    <div className="details-header">{project.title}</div>
-                    <ul className="details-list">
-                        {project.items.map((item, index) => (
-                            <li key={index} className="details-item">
-                                <span className="details-item-name">{item.name}</span>
-                                <span className="details-item-category">{item.category}</span>
-                            </li>
-                        ))}
-                    </ul>
+                <div className="card-cta">
+                    Explore Projects
+                    <ArrowRight size={16} style={{ marginLeft: '8px' }} />
                 </div>
             </div>
         </div>
@@ -78,25 +106,19 @@ const ProjectCard = ({ project, onClick }) => {
 };
 
 
-// --- Main App Component ---
-const App = () => {
+// --- Main Project Component ---
+const ProjectSection = () => {
     const [selectedProject, setSelectedProject] = useState(null);
 
-    // Placeholder for a potential modal/alert for "Explore Projects" CTA
     const handleProjectClick = (project) => {
-        // You can use this to show a detailed modal if needed, 
-        // but for now, we'll just show the console log.
-        // setSelectedProject(project); 
-        console.log('Project card clicked:', project.title);
-        // We will use the modal for the overall app structure, even if not strictly needed now.
         setSelectedProject(project);
     };
 
     return (
         <div className="app-container">
             <div className="projects-section">
-                
-                {/* Header Section */}
+
+                {/* Header Section (Replicated from reference) */}
                 <div className="header">
                     <h1 className="header-title">Our Capabilities</h1>
                     <h2 className="header-subtitle">Empowering Brands Through Digital Innovation</h2>
@@ -105,22 +127,23 @@ const App = () => {
                 {/* Cards Grid */}
                 <div className="cards-grid">
                     {projects.map((project, index) => (
-                        <ProjectCard 
-                            key={project.id} 
-                            project={project} 
+                        <ProjectCard
+                            key={project.id}
+                            project={project}
                             onClick={handleProjectClick}
+                            index={index}
                         />
                     ))}
                 </div>
             </div>
 
-            {/* Project Modal (For the "Explore Projects" action) */}
+            {/* Project Modal (Detailed View) */}
             {selectedProject && (
-                <div 
+                <div
                     className="modal-overlay"
                     onClick={() => setSelectedProject(null)}
                 >
-                    <div 
+                    <div
                         className="modal-content"
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -130,19 +153,20 @@ const App = () => {
                         >
                             <X size={24} color={ACCENT_COLOR_DARK} />
                         </button>
-                        
+
                         <h3 className="modal-title">
                             Projects for: {selectedProject.title}
                         </h3>
-                        
+
                         <div className="modal-items-grid">
                             {selectedProject.items.map((item, idx) => (
-                                <div 
+                                <div
                                     key={idx}
-                                    className="modal-item"
+                                    className={`modal-item ${item.isFeatured ? 'modal-item-featured' : ''}`}
                                 >
                                     <div className="modal-item-icon-wrapper">
-                                        <Globe size={24} color={PRIMARY_COLOR_DARK} />
+                                        {/* Use specific icons if desired, otherwise Globe is default */}
+                                        {selectedProject.icon}
                                     </div>
                                     <h4 className="modal-item-name">
                                         {item.name}
@@ -150,15 +174,31 @@ const App = () => {
                                     <p className="modal-item-description">
                                         {item.description}
                                     </p>
-                                    <span className="modal-item-category-tag">{item.category}</span>
+
+                                    <div className="modal-item-footer">
+                                        <span className="modal-item-category-tag">{item.category}</span>
+
+                                        {/* Conditionally Render Link Button */}
+                                        {item.link && (
+                                            <a
+                                                href={item.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="modal-item-link-btn"
+                                            >
+                                                Visit Website
+                                            </a>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
             )}
-     
 
+
+            {/* The CSS is embedded here */}
             <style>{`
                 /* Global Reset and Font */
                 * {
@@ -168,7 +208,7 @@ const App = () => {
                 }
                 body {
                     font-family: 'Inter', sans-serif;
-                    background-color: #FFF9EA; /* White background as requested */
+                    background-color: #FFF9EA; 
                     color: ${ACCENT_COLOR_DARK};
                 }
 
@@ -209,33 +249,48 @@ const App = () => {
                     gap: 40px;
                 }
 
-                /* --- Project Card Styles (Mimicking Reference Images) --- */
+                /* --- Project Card Styles --- */
                 .project-card-outer {
                     cursor: pointer;
                     position: relative;
-                    perspective: 1000px; /* For 3D transform */
+                    /* Initial state for scroll reveal (hidden/below) */
+                    opacity: 0;
+                    transform: translateY(50px) scale(0.95);
+                    transition: none; /* Disable transitions initially */
+                }
+                
+                /* Scroll Reveal Animation */
+                .project-card-outer.is-visible {
+                    animation: popUpIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+                    animation-delay: var(--animation-delay); /* Use CSS variable for stagger */
+                }
+
+                @keyframes popUpIn {
+                    0% { opacity: 0; transform: translateY(50px) scale(0.95); }
+                    100% { opacity: 1; transform: translateY(0) scale(1); }
                 }
 
                 .project-card {
-                    background-color: #ffffffff; /* Light gray to stand out slightly from white body */
-                    border-radius: 12px;
-                    padding: 30px;
-                    height: 280px; /* Fixed height for uniformity */
+                    background-color: ${CARD_BG}; 
+                    border-radius: 20px; /* Increased border radius for softer look */
+                    padding: 35px;
+                    height: 280px; 
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
                     position: relative;
                     overflow: hidden;
-                    border: 1px solid #e5e7eb;
-                    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+                    border: 2px solid ${PRIMARY_COLOR_LIGHT}; /* Subtle border */
+                    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s;
                     z-index: 10;
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
                 }
                 
                 /* Hover effect on the card */
                 .project-card-outer:hover .project-card {
-                    transform: translateY(-8px);
-                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-                    border-color: ${PRIMARY_COLOR_LIGHT};
+                    transform: translateY(-8px) scale(1.02);
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+                    border-color: ${PRIMARY_COLOR_ACCENT};
                 }
 
                 .card-header {
@@ -260,83 +315,20 @@ const App = () => {
                 .card-cta {
                     font-size: 14px;
                     font-weight: 600;
-                    color: ${PRIMARY_COLOR_DARK};
+                    color: ${PRIMARY_COLOR_ACCENT};
                     align-self: flex-start;
                     padding: 8px 15px;
-                    border-radius: 8px;
+                    border-radius: 12px;
                     background-color: ${PRIMARY_COLOR_LIGHT};
-                    transition: background-color 0.2s;
+                    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+                    display: flex;
+                    align-items: center;
                 }
 
                 .project-card-outer:hover .card-cta {
-                    background-color: ${PRIMARY_COLOR_DARK};
+                    background-color: ${PRIMARY_COLOR_ACCENT};
                     color: ${CARD_BG};
-                }
-
-                /* Hover Detail Pop-up (Mimics the 4th Image) */
-                .card-hover-details {
-                    position: absolute;
-                    inset: 0;
-                    background-color: ${CARD_BG};
-                    padding: 30px;
-                    border-radius: 12px;
-                    
-                    /* Initial hidden state, positioned below */
-                    transform: translateY(100%);
-                    opacity: 0;
-                    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease-out;
-                    z-index: 20;
-                    
-                    /* Box shadow to match the floating look */
-                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-                    
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                /* Visible state on hover */
-                .project-card-outer:hover .card-hover-details {
-                    transform: translateY(0);
-                    opacity: 1;
-                }
-
-                .details-header {
-                    font-size: 20px;
-                    font-weight: 700;
-                    color: ${ACCENT_COLOR_DARK};
-                    margin-bottom: 20px;
-                    border-bottom: 2px solid ${PRIMARY_COLOR_LIGHT};
-                    padding-bottom: 10px;
-                }
-                
-                .details-list {
-                    list-style: none;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 15px;
-                }
-                
-                .details-item {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 5px 0;
-                    border-bottom: 1px dotted #e5e7eb;
-                }
-
-                .details-item-name {
-                    font-weight: 600;
-                    font-size: 15px;
-                    color: ${ACCENT_COLOR_DARK};
-                }
-
-                .details-item-category {
-                    font-size: 12px;
-                    font-weight: 500;
-                    color: #6b7280;
-                    padding: 4px 8px;
-                    border-radius: 4px;
-                    background-color: #f3f4f6;
+                    transform: translateX(5px);
                 }
 
 
@@ -396,17 +388,27 @@ const App = () => {
                     padding: 24px;
                     border-radius: 12px;
                     background-color: #f7f7f7;
-                    transition: transform 0.2s, box-shadow 0.2s;
+                    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
                     border: 1px solid #e5e7eb;
                     display: flex;
                     flex-direction: column;
                     gap: 10px;
                 }
                 
+                .modal-item-featured {
+                    background-color: ${PRIMARY_COLOR_LIGHT};
+                    border: 2px solid ${PRIMARY_COLOR_ACCENT};
+                }
+                .modal-item-featured .modal-item-name {
+                    color: ${PRIMARY_COLOR_ACCENT};
+                    text-shadow: 0 0 5px rgba(163, 139, 87, 0.5);
+                }
+
+
                 .modal-item:hover {
                     transform: translateY(-2px);
-                    box-shadow: 0 5px 15px rgba(34, 197, 94, 0.1);
-                    border-color: ${PRIMARY_COLOR_DARK};
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                    border-color: ${PRIMARY_COLOR_ACCENT};
                 }
 
                 .modal-item-icon-wrapper {
@@ -430,16 +432,37 @@ const App = () => {
                     font-size: 14px;
                     color: #666666;
                 }
+
+                .modal-item-footer {
+                    margin-top: auto;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
                 
                 .modal-item-category-tag {
-                    align-self: flex-start;
                     font-size: 11px;
                     font-weight: 600;
                     padding: 4px 8px;
                     border-radius: 4px;
                     background-color: #e5e7eb;
                     color: #4b5563;
-                    margin-top: auto; /* Push to bottom */
+                }
+
+                .modal-item-link-btn {
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding: 6px 12px;
+                    border-radius: 8px;
+                    background-color: ${PRIMARY_COLOR_ACCENT};
+                    color: #fff;
+                    text-decoration: none;
+                    transition: background 0.2s;
+                }
+                .modal-item-link-btn:hover {
+                    background-color: #8a7548;
                 }
 
                 @keyframes fadeIn {
@@ -484,4 +507,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default ProjectSection;

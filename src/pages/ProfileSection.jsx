@@ -29,8 +29,8 @@ const ProfileSection = () => {
       description:
         "A visionary full stack developer with a strong foundation in AI and emerging technologies. I architect transformative digital solutions that fuse captivating design with robust functionality.",
       avatar: imgAbhinivesh,
-      linkedin: "#",
-      portfolio: "#",
+      linkedin: "https://www.linkedin.com/in/abhinivesh-s-888894sa/",
+      portfolio: "https://docs.google.com/document/d/1oJV3dqzHlu1daAS-v5hbrFopZzTtYgO6/edit?usp=drivesdk&ouid=116490592873221895952&rtpof=true&sd=true",
     },
     {
       id: 3,
@@ -49,8 +49,8 @@ const ProfileSection = () => {
       description:
         "A specialist in content writing and marketing. I turn brand stories into engaging campaigns that captivate audiences and drive real results through creativity and strategy.",
       avatar: imgThiruneshak,
-      linkedin: "#",
-      portfolio: "#",
+      linkedin: "https://www.linkedin.com/in/thiruneshak-j",
+      portfolio: "https://thiruneshakj-portfolio.netlify.app",
     },
     {
       id: 5,
@@ -59,8 +59,8 @@ const ProfileSection = () => {
       description:
         "A product manager passionate about innovation and operational excellence. I guide teams to deliver impactful, high-performing products that meet user needs and business goals.",
       avatar: imgSriman,
-      linkedin: "#",
-      portfolio: "#",
+      linkedin: "https://www.linkedin.com/in/srimanh/",
+      portfolio: "https://tranquil-kitsune-3ae00d.netlify.app",
     },
     {
       id: 6,

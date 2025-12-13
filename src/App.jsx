@@ -1,17 +1,16 @@
-// ...existing code...
-import React from 'react'
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './pages/LandingPage.jsx'
-// import WhatWeOffer from './pages/WhatWeOffer.jsx'
 import Project from './pages/project-feedback.jsx'
-import ProfileSection from './pages/ProfileSection.jsx'
 import MeetingSection from './pages/MeetingSection.jsx'
 import LoveLetters from './pages/LoveLetters.jsx'
 import Footer from './pages/Footer.jsx'
-// ...existing code...
+import AboutUsPage from './pages/aboutpage.jsx'
+import Preloader from './components/Preloader.jsx'
+
 function MainContent() {
   const sectionStyle = { scrollMarginTop: '100px' };
-  
+
   return (
     <>
       <div id="home" style={sectionStyle}>
@@ -41,11 +40,14 @@ function MainContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainContent />} />
-        <Route path="/about-us-page" element={<ProfileSection />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Preloader />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainContent />} />
+          <Route path="/about-us-page" element={<AboutUsPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }

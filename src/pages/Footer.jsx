@@ -1,8 +1,7 @@
 import React from 'react';
-import './Footer.css';
+import './Footer.css'
 
-// SVG icons for consistency and style
-// You already had them, but naming them makes the component cleaner
+// --- SVG Icons (Kept for consistency and bold style) ---
 const LinkedInIcon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -26,39 +25,57 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="footer-page">
+    <div className="footer-page-wrapper">
+      <div className="footer-wave-shape"></div>
+      
+      {/* 1. Pre-Footer CTA Section (The "Ready to bring your vision to life" part) */}
+      <div className="pre-footer-cta">
+        <h2 className="cta-title">Ready to Unlock Your Growth?</h2>
+        <p className="cta-subtitle">
+          Every great partnership starts with a short, focused conversation.
+          <br/>
+          Book your 25-minute strategy call now—it’s practical and commitment-free.
+        </p>
+        <button className="book-meeting-btn">
+          Book a Strategy Call →
+        </button>
+      </div>
+
+      {/* 2. Main Footer Content */}
       <div className="footer-container">
-        {/* Section 1: Brand / Headline (Like FONDER) */}
+        {/* Section 1: Brand / Tagline */}
         <div className="footer-section footer-brand">
           <h1 className="brand-logo">OnetoZ</h1>
           <p className="footer-tagline">
-            Helping Local Businesses Grow
+            <b>Digital Growth Partners</b> for Tamil Nadu Businesses.
             <br />
-            in the Digital World !!
+            Minimal Design, Maximal Impact.
           </p>
           <div className="cta-container">
-             <button className="footer-btn primary-cta" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+             <button className="footer-btn primary-cta">
                 Let's Talk
             </button>
-            <button className="footer-btn secondary-cta" onClick={() => document.getElementById('about-us')?.scrollIntoView({ behavior: 'smooth' })}>
+            <button className="footer-btn secondary-cta">
                 About Us
             </button>
           </div>
         </div>
 
-        {/* Section 2: Navigation Links (Like MYGOM) */}
+        {/* Section 2: Navigation Links */}
         <div className="footer-section footer-navigation">
           <div className="nav-column">
             <h3>Quick Links</h3>
             <ul>
               <li><a href="#home">Home</a></li>
               <li><a href="#projects">Projects</a></li>
-              <li><a href="#meeting">Book a Meeting</a></li>
+              <li><a href="#process">Process</a></li>
+              <li><a href="#about-us">About Us</a></li>
             </ul>
           </div>
           <div className="nav-column">
-            <h3>Legal</h3>
+            <h3>Resources</h3>
             <ul>
+              <li><a href="/case-studies">Case Studies</a></li>
               <li><a href="/privacy-policy">Privacy Policy</a></li>
               <li><a href="/terms">Terms & Conditions</a></li>
               <li><a href="/sitemap">Sitemap</a></li>
@@ -66,11 +83,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Section 3: Contact and Socials (Like MYGOM) */}
+        {/* Section 3: Contact and Socials */}
         <div className="footer-section footer-contact-social">
           <h3>Get In Touch</h3>
           <p>Email: <a href="mailto:OnetoZ@gmail.com" className="contact-link">OnetoZ@gmail.com</a></p>
-          <p>Phone: <a href="tel:+1234567890" className="contact-link">+1 (234) 567-890</a></p>
+          <p>Phone: <a href="tel:+1234567890" className="contact-link">+91 9791985961</a></p>
           
           <div className="footer-social-icons">
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon">
@@ -86,7 +103,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar: Copyright */}
+      {/* 3. Bottom Bar: Copyright */}
       <div className="footer-bottom-bar">
         <p className="copyright-text">
           &copy; {currentYear} OnetoZ. All rights reserved.
@@ -95,3 +112,4 @@ export default function Footer() {
     </div>
   )
 }
+
