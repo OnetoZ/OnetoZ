@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ProfileSection.css";
-
 import imgAkarshana from "./about us image/Akarshana .jpg";
 import imgAbhinivesh from "./about us image/abhinivesh.jpg";
-import imgAkashad from "./about us image/akshad.jpg";
-import imgThiruneshak from "./about us image/thiruneshak.jpg";
 import imgSriman from "./about us image/sriman.jpg";
 import imgSandhanam from "./about us image/sandhanam.jpg";
 
@@ -34,26 +31,6 @@ const ProfileSection = () => {
     },
     {
       id: 3,
-      name: "Akashad",
-      roleLines: ["CONTENT", "WRITTER AND", "DIGITAL MARKETING"],
-      description:
-        "A frontend and digital marketing specialist elevating brand identities through striking visuals and smart online strategies. I blend creative design with data-driven marketing for engaging experiences.",
-      avatar: imgAkashad,
-      linkedin: "#",
-      portfolio: "#",
-    },
-    {
-      id: 4,
-      name: "Thiruneshak",
-      roleLines: ["FULLSTACK ", "DEVELOPER AND", "DIGITAL MARKETING"],
-      description:
-        "A specialist in content writing and marketing. I turn brand stories into engaging campaigns that captivate audiences and drive real results through creativity and strategy.",
-      avatar: imgThiruneshak,
-      linkedin: "https://www.linkedin.com/in/thiruneshak-j",
-      portfolio: "https://thiruneshakj-portfolio.netlify.app",
-    },
-    {
-      id: 5,
       name: "Sriman",
       roleLines: ["PRODUCT", "MANAGER AND", " FULLSTACK DEVELOPER"],
       description:
@@ -63,7 +40,7 @@ const ProfileSection = () => {
       portfolio: "https://tranquil-kitsune-3ae00d.netlify.app",
     },
     {
-      id: 6,
+      id: 4,
       name: "Sandhanam",
       roleLines: ["UI/UX ", "DESIGNER AND", "FULLSTACK DEVELOPER"],
       description:
