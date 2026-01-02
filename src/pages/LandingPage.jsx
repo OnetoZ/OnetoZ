@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './LandingPage.css'
 import Squares from '../components/Backgrounds/Squares'
 // NOTE: Assuming image files are available in the correct relative path
@@ -34,6 +35,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
   const heroBackgroundRef = useRef(null);
   const heroSectionRef = useRef(null);
   const scrollPositionRef = useRef(0); // Store scroll position
+  const navigate = useNavigate();
 
 
 
@@ -136,7 +138,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
           <div className="lp-navItem" onClick={() => scrollToSection('projects')}>PROJECTS</div>
           <div className="lp-navItem" onClick={() => scrollToSection('process')}>PROCESS</div>
           <div className="lp-navItem" onClick={() => scrollToSection('contact')}>CONTACT</div>
-          <div className="lp-navItem" onClick={() => window.location.href = '/about-us-page'}>ABOUT US</div>
+          <div className="lp-navItem" onClick={() => navigate('/about-us-page')}>ABOUT US</div>
         </div>
         <div className="lp-gridWrap lp-pop" onClick={toggleDarkMode}>
           <span className="lp-gridSquare-top-left" />

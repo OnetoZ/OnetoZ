@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 import ProfileSection from './ProfileSection';
 import './aboutpage.css';
@@ -8,6 +9,7 @@ import teamOnetoz from './about us image/team onetoz.jpeg'
 
 
 const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
+    const navigate = useNavigate();
     const scrollToSection = (sectionId) => {
         const element = document.getElementById(sectionId)
         if (element) {
@@ -30,10 +32,10 @@ const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
                 {/* Small logo at the top (left) */}
                 <img src={ozLogo} alt="OZ" className="lp-brandLogoSmall lp-pop" />
                 <div className="lp-navPill">
-                    <div className="lp-navItem" onClick={() => window.location.href = '/'}>HOME</div>
-                    <div className="lp-navItem" onClick={() => window.location.href = '/'}>PROJECTS</div>
-                    <div className="lp-navItem" onClick={() => window.location.href = '/'}>PROCESS</div>
-                    <div className="lp-navItem" onClick={() => window.location.href = '/'}>CONTACT</div>
+                    <div className="lp-navItem" onClick={() => navigate('/')}>HOME</div>
+                    <div className="lp-navItem" onClick={() => navigate('/')}>PROJECTS</div>
+                    <div className="lp-navItem" onClick={() => navigate('/')}>PROCESS</div>
+                    <div className="lp-navItem" onClick={() => navigate('/')}>CONTACT</div>
                     <div className="lp-navItem" onClick={() => scrollToSection('about-section')}>ABOUT US</div>
                 </div>
                 {/* 2x2 grid icon */}
