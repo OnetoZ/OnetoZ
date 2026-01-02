@@ -21,11 +21,11 @@ const InstagramIcon = () => (
 );
 
 
-export default function Footer() {
+export default function Footer({ isDarkMode }) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="footer-page-wrapper">
+    <div className={`footer-page-wrapper ${isDarkMode ? 'dark-theme' : ''}`}>
       <div className="footer-wave-shape"></div>
 
       {/* 1. Pre-Footer CTA Section (The "Ready to bring your vision to life" part) */}
@@ -34,10 +34,10 @@ export default function Footer() {
         <p className="cta-subtitle">
           Every great partnership starts with a short, focused conversation.
           <br />
-          Book your 25-minute strategy call now—it’s practical and commitment-free.
+          “Book a free 30-minute strategy call to explore solutions tailored to your needs.”
         </p>
         <button className="book-meeting-btn">
-          Book a Strategy Call →
+          Book Free Strategy Call →
         </button>
       </div>
 
