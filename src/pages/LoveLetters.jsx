@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
-const TestimonialSection = () => {
+const TestimonialSection = ({ isDarkMode }) => {
   // --- Testimonial Data ---
   const allTestimonials = [
     {
@@ -82,7 +82,7 @@ const TestimonialSection = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  
+
   // Ref to store the total rotation applied to the scroll track
   const totalRotationRef = useRef(0);
   // Ref to track the previous scroll position
@@ -113,33 +113,33 @@ const TestimonialSection = () => {
     const walk = (x - startX) * 1.5; // Scroll speed multiplier
     trackRef.current.scrollLeft = scrollLeft - walk;
   };
-  
+
   // --- ROLLING TIRE ANIMATION LOGIC (FIX) ---
   const handleScroll = useCallback(() => {
     const currentScrollLeft = trackRef.current.scrollLeft;
-    
+
     // Calculate how much the scroll position has changed
     const scrollDelta = currentScrollLeft - lastScrollLeftRef.current;
-    
+
     // A multiplier to tune the speed of rotation relative to the scroll distance.
     // Negative sign because scrolling right (positive delta) means the box should rotate clockwise (negative Z rotation).
-    const rotationMultiplier = -0.08; 
-    
+    const rotationMultiplier = -0.08;
+
     // Update the total rotation
     totalRotationRef.current += scrollDelta * rotationMultiplier;
-    
+
     // Apply the rotation to all card containers
     const cards = trackRef.current.querySelectorAll('.testimonial-card');
     cards.forEach(card => {
-        // We use the initial rotation stored in the CSS variable (which accounts for the wavy look)
-        // and add the dynamic rolling rotation.
-        const initialRotation = parseFloat(card.dataset.initialRotation || 0);
-        card.style.transform = `rotateZ(${initialRotation + totalRotationRef.current}deg)`;
+      // We use the initial rotation stored in the CSS variable (which accounts for the wavy look)
+      // and add the dynamic rolling rotation.
+      const initialRotation = parseFloat(card.dataset.initialRotation || 0);
+      card.style.transform = `rotateZ(${initialRotation + totalRotationRef.current}deg)`;
     });
-    
+
     // Update the last scroll position
     lastScrollLeftRef.current = currentScrollLeft;
-    
+
   }, []);
 
   useEffect(() => {
@@ -147,11 +147,11 @@ const TestimonialSection = () => {
     if (trackElement) {
       // Initialize last scroll position
       lastScrollLeftRef.current = trackElement.scrollLeft;
-      
+
       // Attach scroll listener
       trackElement.addEventListener('scroll', handleScroll);
     }
-    
+
     return () => {
       if (trackElement) {
         trackElement.removeEventListener('scroll', handleScroll);
@@ -159,7 +159,7 @@ const TestimonialSection = () => {
     };
   }, [handleScroll]);
 
-  
+
   // --- Entrance Animation Logic ---
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -169,32 +169,32 @@ const TestimonialSection = () => {
             entry.target.classList.add('is-visible');
           } else {
             // Re-animate on scroll back
-            entry.target.classList.remove('is-visible'); 
+            entry.target.classList.remove('is-visible');
           }
         });
       },
-      { root: null, rootMargin: '0px', threshold: 0.2 } 
+      { root: null, rootMargin: '0px', threshold: 0.2 }
     );
 
     const timer = setTimeout(() => {
-        const cardWrappers = document.querySelectorAll('.card-container');
-        cardWrappers.forEach((wrapper) => {
-            observer.observe(wrapper);
-        });
+      const cardWrappers = document.querySelectorAll('.card-container');
+      cardWrappers.forEach((wrapper) => {
+        observer.observe(wrapper);
+      });
     }, 100);
 
     return () => {
-        clearTimeout(timer);
-        observer.disconnect();
+      clearTimeout(timer);
+      observer.disconnect();
     };
-  }, []); 
-  
+  }, []);
+
   // Initial card rotations (for the natural wavy look)
-  const initialRotations = [-3, 1, -2, 3]; 
+  const initialRotations = [-3, 1, -2, 3];
 
   // --- Render ---
   return (
-    <div className="feedback-section">
+    <div className={`feedback-section ${isDarkMode ? 'dark-theme' : ''}`}>
       {/* Increased gap from previous section */}
       <div className="feedback-header-content">
         <h1 className="feedback-title">Client Testimonials</h1>
@@ -202,10 +202,10 @@ const TestimonialSection = () => {
           We cherish each customer message as a heartfelt vote of confidence. Your trust inspires our unwavering commitment to excellence and fuels our passion to exceed expectations.
         </p>
       </div>
-      
+
       {/* Horizontal Scroll Track */}
       <div className="feedback-marquee-container">
-        <div 
+        <div
           className="feedback-track"
           ref={trackRef}
           onMouseDown={handleMouseDown}
@@ -216,12 +216,12 @@ const TestimonialSection = () => {
           {allTestimonials.map((t, i) => {
             const initialRotation = initialRotations[i % initialRotations.length];
             return (
-              <div 
-                  key={i} 
-                  className="card-container"
-                  style={{ '--animation-delay': `${i * 0.05}s` }}
+              <div
+                key={i}
+                className="card-container"
+                style={{ '--animation-delay': `${i * 0.05}s` }}
               >
-                <div 
+                <div
                   className={`testimonial-card card-color-${(i % 4) + 1}`}
                   data-initial-rotation={initialRotation}
                   style={{ transform: `rotateZ(${initialRotation}deg)` }}
@@ -251,6 +251,12 @@ const TestimonialSection = () => {
           overflow-x: hidden; 
           padding-top: 180px; /* Increased gap */
           padding-bottom: 120px;
+          transition: background-color 0.4s, color 0.4s;
+        }
+
+        .feedback-section.dark-theme {
+            background-color: #111111;
+            color: #FFF9EA;
         }
 
         /* --- Header Styles --- */
@@ -267,6 +273,11 @@ const TestimonialSection = () => {
             color: #222; 
             letter-spacing: -1.5px;
             text-shadow: 0 3px 2px rgba(0,0,0,0.1);
+            transition: color 0.4s;
+        }
+
+        .dark-theme .feedback-title {
+            color: #FFF9EA;
         }
         .feedback-description { 
             font-size: 18px; 
@@ -275,6 +286,11 @@ const TestimonialSection = () => {
             line-height: 1.7; 
             color: #444; 
             font-weight: 400; 
+            transition: color 0.4s;
+        }
+
+        .dark-theme .feedback-description {
+            color: #9CA3AF;
         }
 
         /* --- Marquee/Scroll Container --- */
@@ -345,14 +361,23 @@ const TestimonialSection = () => {
           will-change: transform; /* Performance optimization for rotation */
           
           /* Initial rotation is set inline, dynamic rotation added via JS scroll handler */
+          transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s;
+        }
+
+        .dark-theme .testimonial-card {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
         
-        /* Color themes */
+        /* Color themes - Slightly muted for dark mode */
         .card-color-1 { background: #E9DFFB; } 
         .card-color-2 { background: #FFDDE2; } 
         .card-color-3 { background: #D6F6D9; } 
         .card-color-4 { background: #E5F6FF; } 
-        
+
+        .dark-theme .card-color-1 { background: #2D243D; }
+        .dark-theme .card-color-2 { background: #3D2428; }
+        .dark-theme .card-color-3 { background: #1B311D; }
+        .dark-theme .card-color-4 { background: #1A2B3D; }        
         /* Hover Effect: LIFT UP and STRAIGHTEN */
         .testimonial-card:hover { 
             /* This is the fix: Override the ongoing dynamic rotation and apply a static, lifted transform */
@@ -368,6 +393,11 @@ const TestimonialSection = () => {
             color: #111; 
             letter-spacing: -0.2px; 
             margin-bottom: 20px; 
+            transition: color 0.4s;
+        }
+
+        .dark-theme .testimonial-quote {
+            color: #FFF9EA;
         }
         .testimonial-meta { display: flex; align-items: center; gap: 14px; margin-top: auto; }
         .testimonial-avatar { 
@@ -377,8 +407,11 @@ const TestimonialSection = () => {
             box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
             object-fit: cover; 
         }
-        .testimonial-name { font-weight: 700; color: #111; }
-        .testimonial-role { color: #333; opacity: .8; font-weight: 500; font-size: 14px; }
+        .testimonial-name { font-weight: 700; color: #111; transition: color 0.4s; }
+        .testimonial-role { color: #333; opacity: .8; font-weight: 500; font-size: 14px; transition: color 0.4s; }
+
+        .dark-theme .testimonial-name { color: #FFF9EA; }
+        .dark-theme .testimonial-role { color: #9CA3AF; }
 
         /* --- Responsive Adjustments --- */
         @media (max-width: 992px) {

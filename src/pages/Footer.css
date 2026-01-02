@@ -1,82 +1,124 @@
   @keyframes wave {
-    0% { transform: translateY(-50px) scale(1, 1); }
-    50% { transform: translateY(-55px) scale(1.005, 1); }
-    100% { transform: translateY(-50px) scale(1, 1); }
+    0% {
+      transform: translateY(-50px) scale(1, 1);
+    }
+
+    50% {
+      transform: translateY(-55px) scale(1.005, 1);
+    }
+
+    100% {
+      transform: translateY(-50px) scale(1, 1);
+    }
   }
 
   /* --- 1. General Wrapper and Wow Background --- */
   .footer-page-wrapper {
-    background-color: #FFF9EA; 
-    padding-top: 0; /* Handled by CTA section */
+    background-color: #FFF9EA;
+    padding-top: 0;
+    /* Handled by CTA section */
     position: relative;
-    overflow: hidden; 
+    overflow: hidden;
     font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    transition: background-color 0.4s;
   }
-  
+
+  .footer-page-wrapper.dark-theme {
+    background-color: #111111;
+  }
+
   .footer-wave-shape {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #f5f0e0; /* A slightly darker, warmer shade for contrast */
-      z-index: 1; 
-      
-      /* Larger, more dramatic organic shape */
-      border-top-left-radius: 70% 100px; 
-      border-top-right-radius: 50% 150px;
-      
-      transform: translateY(-50px);
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.05); 
-      
-      /* Subtle Animation */
-      animation: wave 10s ease-in-out infinite;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f5f0e0;
+    /* A slightly darker, warmer shade for contrast */
+    z-index: 1;
+
+    /* Larger, more dramatic organic shape */
+    border-top-left-radius: 70% 100px;
+    border-top-right-radius: 50% 150px;
+
+    transform: translateY(-50px);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.05);
+
+    /* Subtle Animation */
+    animation: wave 10s ease-in-out infinite;
+    transition: background-color 0.4s;
+  }
+
+  .dark-theme .footer-wave-shape {
+    background-color: #0c0c0c;
   }
 
   /* --- 2. Pre-Footer CTA Section (The new addition for "Wonderfull") --- */
   .pre-footer-cta {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 100px 32px;
-      text-align: center;
-      position: relative;
-      z-index: 5;
-      background-color: transparent; /* Sits on top of the main background */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 32px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+    background-color: transparent;
+    /* Sits on top of the main background */
   }
-  
+
   .cta-title {
-      font-size: 3.5em; /* Big and bold */
-      font-weight: 800;
-      color: #000;
-      margin-bottom: 20px;
-      letter-spacing: -1px;
+    font-size: 3.5em;
+    /* Big and bold */
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+    transition: color 0.4s;
   }
-  
+
+  .dark-theme .cta-title {
+    color: #FFF9EA;
+  }
+
   .cta-subtitle {
-      font-size: 1.3em;
-      color: #444;
-      max-width: 800px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
+    font-size: 1.3em;
+    color: #444;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+    transition: color 0.4s;
   }
-  
+
+  .dark-theme .cta-subtitle {
+    color: #9CA3AF;
+  }
+
   .book-meeting-btn {
-      padding: 18px 40px; /* Large button */
-      font-size: 1.1em;
-      font-weight: 700;
-      border: none;
-      border-radius: 12px;
-      background-color: #000;
-      color: #FFF9EA;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
+    padding: 18px 40px;
+    /* Large button */
+    font-size: 1.1em;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    background-color: #000;
+    color: #FFF9EA;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
   }
-  
+
+  .dark-theme .book-meeting-btn {
+    background-color: #FFF9EA;
+    color: #111;
+  }
+
   .book-meeting-btn:hover {
-      background-color: #333;
-      transform: translateY(-3px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+    background-color: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark-theme .book-meeting-btn:hover {
+    background-color: #E5E7EB;
   }
 
   /* --- 3. Main Footer Content Container --- */
@@ -85,60 +127,94 @@
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    gap: 80px; /* Increased gap */
-    padding: 80px 32px; /* Increased vertical padding */
-    position: relative; 
-    z-index: 2; 
-    color: #222; 
-    border-top: 1px solid #e0e0e0; /* Separator from CTA section */
+    gap: 80px;
+    /* Increased gap */
+    padding: 80px 32px;
+    /* Increased vertical padding */
+    position: relative;
+    z-index: 2;
+    color: #222;
+    border-top: 1px solid #e0e0e0;
+    /* Separator from CTA section */
+    transition: color 0.4s, border-color 0.4s;
+  }
+
+  .dark-theme .footer-container {
+    color: #FFF9EA;
+    border-top-color: #222;
   }
 
   /* --- Typography and Headings --- */
   .footer-section h3 {
-    font-size: 1.3em; /* Bigger heading */
+    font-size: 1.3em;
+    /* Bigger heading */
     font-weight: 800;
     margin-bottom: 30px;
-    color: #000; 
+    color: #000;
     text-transform: uppercase;
-    letter-spacing: 1.5px; /* Wider spacing */
+    letter-spacing: 1.5px;
+    /* Wider spacing */
     position: relative;
   }
-  
+
   .footer-section h3::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: -10px;
-      width: 40px; /* Longer line */
-      height: 4px; /* Thicker line */
-      background-color: #000;
-      border-radius: 5px;
-      transition: width 0.3s ease;
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 40px;
+    /* Longer line */
+    height: 4px;
+    /* Thicker line */
+    background-color: #000;
+    border-radius: 5px;
+    transition: width 0.3s ease, background-color 0.4s;
   }
-  
+
+  .dark-theme .footer-section h3 {
+    color: #FFF9EA;
+  }
+
+  .dark-theme .footer-section h3::after {
+    background-color: #FFF9EA;
+  }
+
   .footer-section h3:hover::after {
-      width: 60px; /* Animation on hover */
+    width: 60px;
+    /* Animation on hover */
   }
 
   .footer-brand {
-    flex: 2; 
+    flex: 2;
     padding-right: 40px;
   }
 
   .brand-logo {
-    font-size: 4em; /* Very large logo */
+    font-size: 4em;
+    /* Very large logo */
     font-weight: 900;
     margin: 0 0 15px 0;
-    color: #000; 
+    color: #000;
     line-height: 1;
+    transition: color 0.4s;
+  }
+
+  .dark-theme .brand-logo {
+    color: #FFF9EA;
   }
 
   .footer-tagline {
-    font-size: 1.25em; /* Bigger tagline text */
+    font-size: 1.25em;
+    /* Bigger tagline text */
     line-height: 1.6;
     margin-bottom: 35px;
     color: #444;
     font-weight: 500;
+    transition: color 0.4s;
+  }
+
+  .dark-theme .footer-tagline {
+    color: #9CA3AF;
   }
 
   .cta-container {
@@ -147,24 +223,33 @@
   }
 
   .footer-btn {
-    padding: 15px 30px; 
+    padding: 15px 30px;
     border: none;
     border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 
   .primary-cta {
-    background-color: #000; 
+    background-color: #000;
     color: #fff;
+  }
+
+  .dark-theme .primary-cta {
+    background-color: #FFF9EA;
+    color: #111;
   }
 
   .primary-cta:hover {
     background-color: #222;
     transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  }
+
+  .dark-theme .primary-cta:hover {
+    background-color: #E5E7EB;
   }
 
   .secondary-cta {
@@ -173,23 +258,34 @@
     border: 2px solid #ccc;
   }
 
+  .dark-theme .secondary-cta {
+    background-color: #111;
+    color: #FFF9EA;
+    border-color: #333;
+  }
+
   .secondary-cta:hover {
     background-color: #f0f0f0;
     transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  }
+
+  .dark-theme .secondary-cta:hover {
+    background-color: #222;
   }
 
   /* --- Section 2: Navigation Links --- */
   .footer-navigation {
     flex: 2;
     display: flex;
-    gap: 80px; /* Increased gap */
+    gap: 80px;
+    /* Increased gap */
   }
 
   .nav-column {
     flex: 1;
   }
-  
+
   .footer-navigation ul {
     list-style: none;
     padding: 0;
@@ -197,42 +293,53 @@
   }
 
   .footer-navigation li {
-    margin-bottom: 12px; /* Increased line spacing */
+    margin-bottom: 12px;
+    /* Increased line spacing */
   }
 
   .footer-navigation a {
     text-decoration: none;
     color: #555;
-    font-size: 1.1em; /* Bigger link text */
+    font-size: 1.1em;
+    /* Bigger link text */
     font-weight: 500;
     position: relative;
     transition: color 0.2s, padding-left 0.2s;
   }
 
+  .dark-theme .footer-navigation a {
+    color: #9CA3AF;
+  }
+
   .footer-navigation a:hover {
-    color: #000; 
-    padding-left: 10px; /* Subtle slide animation */
+    color: #000;
+    padding-left: 10px;
+    /* Subtle slide animation */
   }
-  
+
+  .dark-theme .footer-navigation a:hover {
+    color: #FFF9EA;
+  }
+
   .footer-navigation a::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      opacity: 0;
-      color: #000;
-      transition: opacity 0.2s, left 0.2s;
+    content: '→';
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    color: #000;
+    transition: opacity 0.2s, left 0.2s;
   }
-  
+
   .footer-navigation a:hover::before {
-      left: -15px;
-      opacity: 1;
+    left: -15px;
+    opacity: 1;
   }
 
   /* --- Section 3: Contact and Socials --- */
   .footer-contact-social {
     flex: 1;
   }
-  
+
   .footer-contact-social p {
     margin-bottom: 15px;
     font-size: 1.1em;
@@ -243,8 +350,12 @@
     color: #444;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.2s;
+    transition: color 0.2s, border-color 0.2s;
     border-bottom: 2px solid transparent;
+  }
+
+  .dark-theme .contact-link {
+    color: #FFF9EA;
   }
 
   .contact-link:hover {
@@ -252,39 +363,59 @@
     border-color: #000;
   }
 
+  .dark-theme .contact-link:hover {
+    color: #A38B57;
+    border-color: #A38B57;
+  }
+
   .footer-social-icons {
     margin-top: 30px;
     display: flex;
     gap: 20px;
-    justify-content: flex-start; 
+    justify-content: flex-start;
   }
 
   .social-icon {
-    width: 45px; /* Even larger icons */
+    width: 45px;
+    /* Even larger icons */
     height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #000; /* Thicker border */
+    border: 3px solid #000;
+    /* Thicker border */
     border-radius: 50%;
     color: #000;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.2s;
+    transition: all 0.3s ease;
+  }
+
+  .dark-theme .social-icon {
+    border-color: #FFF9EA;
+    color: #FFF9EA;
   }
 
   .social-icon:hover {
     background-color: #000;
-    color: #FFF9EA; 
+    color: #FFF9EA;
     border-color: #000;
-    transform: scale(1.1) rotate(5deg); /* Larger bounce effect */
+    transform: scale(1.1) rotate(5deg);
+    /* Larger bounce effect */
+  }
+
+  .dark-theme .social-icon:hover {
+    background-color: #FFF9EA;
+    color: #111;
+    border-color: #FFF9EA;
   }
 
   /* --- 4. Bottom Bar --- */
   .footer-bottom-bar {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 30px 32px; /* Increased padding */
+    padding: 30px 32px;
+    /* Increased padding */
     text-align: center;
-    border-top: 1px solid #ddd; 
+    border-top: 1px solid #ddd;
     position: relative;
     z-index: 2;
   }
@@ -297,81 +428,85 @@
 
   /* --- Media Queries for Mobile Responsiveness --- */
   @media (max-width: 992px) {
-      .pre-footer-cta {
-          padding: 80px 20px;
-      }
-      .cta-title {
-          font-size: 2.5em;
-      }
-      .cta-subtitle {
-          font-size: 1.1em;
-      }
+    .pre-footer-cta {
+      padding: 80px 20px;
+    }
 
-      .footer-container {
-          flex-wrap: wrap;
-          gap: 40px;
-          padding: 60px 20px;
-      }
-      
-      .footer-brand {
-          flex-basis: 100%;
-          text-align: center;
-          padding-right: 0;
-          margin-bottom: 20px;
-      }
-      
-      .footer-section h3::after {
-          left: 50%;
-          transform: translateX(-50%);
-      }
+    .cta-title {
+      font-size: 2.5em;
+    }
 
-      .cta-container {
-          justify-content: center;
-      }
-      
-      .footer-navigation {
-          flex-basis: 100%;
-          justify-content: space-around;
-          gap: 20px;
-      }
-      
-      .footer-contact-social {
-          flex-basis: 100%;
-          text-align: center;
-      }
-      
-      .footer-social-icons {
-          justify-content: center;
-      }
+    .cta-subtitle {
+      font-size: 1.1em;
+    }
+
+    .footer-container {
+      flex-wrap: wrap;
+      gap: 40px;
+      padding: 60px 20px;
+    }
+
+    .footer-brand {
+      flex-basis: 100%;
+      text-align: center;
+      padding-right: 0;
+      margin-bottom: 20px;
+    }
+
+    .footer-section h3::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .cta-container {
+      justify-content: center;
+    }
+
+    .footer-navigation {
+      flex-basis: 100%;
+      justify-content: space-around;
+      gap: 20px;
+    }
+
+    .footer-contact-social {
+      flex-basis: 100%;
+      text-align: center;
+    }
+
+    .footer-social-icons {
+      justify-content: center;
+    }
   }
 
   @media (max-width: 576px) {
-      .cta-title {
-          font-size: 2em;
-      }
-      .footer-navigation {
-          flex-direction: column;
-          gap: 30px;
-      }
-      
-      .nav-column {
-          text-align: center;
-      }
-      
-      .footer-navigation ul {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 10px 15px;
-      }
-      
-      .book-meeting-btn {
-          width: 100%;
-          padding: 15px 0;
-      }
-      
-      .footer-btn {
-          width: 48%; /* Adjust for small screen button size */
-          padding: 12px 0;
-      }
+    .cta-title {
+      font-size: 2em;
+    }
+
+    .footer-navigation {
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .nav-column {
+      text-align: center;
+    }
+
+    .footer-navigation ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 15px;
+    }
+
+    .book-meeting-btn {
+      width: 100%;
+      padding: 15px 0;
+    }
+
+    .footer-btn {
+      width: 48%;
+      /* Adjust for small screen button size */
+      padding: 12px 0;
+    }
   }

@@ -1,12 +1,13 @@
 import React from 'react';
-import Footer from './Footer'; 
-import ProfileSection from './ProfileSection'; 
-import './aboutpage.css'; 
+import Footer from './Footer';
+import ProfileSection from './ProfileSection';
+import './aboutpage.css';
 import ozLogo from './image/OZ logo.png'
 import './LandingPage.css'
+import teamOnetoz from './about us image/team onetoz.jpeg'
 
 
-const AboutUsPage = () => {
+const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
     const scrollToSection = (sectionId) => {
         const element = document.getElementById(sectionId)
         if (element) {
@@ -20,29 +21,29 @@ const AboutUsPage = () => {
             })
         }
     }
-    
+
     return (
-        <div className="about-us-page-wrapper">
+        <div className={`about-us-page-wrapper ${isDarkMode ? 'dark-theme lp-dark-theme' : ''}`}>
             {/* 1. Navigation Bar (As seen in your screenshots) */}
             {/* <Navbar />  */}
-             <div className="lp-topBar lp-enter-up">
-                      {/* Small logo at the top (left) */}
-                      <img src={ozLogo} alt="OZ" className="lp-brandLogoSmall lp-pop" />
-                      <div className="lp-navPill">
-                        <div className="lp-navItem" onClick={() => window.location.href = '/'}>HOME</div>
-                        <div className="lp-navItem" onClick={() => window.location.href = '/'}>PROJECTS</div>
-                        <div className="lp-navItem" onClick={() => window.location.href = '/'}>PROCESS</div> 
-                        <div className="lp-navItem" onClick={() => window.location.href = '/'}>CONTACT</div>
-                        <div className="lp-navItem" onClick={() => scrollToSection('about-section')}>ABOUT US</div>
-                      </div>
-                      {/* 2x2 grid icon */}
-                      <div className="lp-gridWrap lp-pop">
-                        <span className="lp-gridSquare-top-left" />
-                        <span className="lp-gridSquare-top-right" />
-                        <span className="lp-gridSquare-bottom-left" />
-                        <span className="lp-gridSquare-bottom-right" />
-                      </div>
-                    </div>
+            <div className="lp-topBar lp-enter-up">
+                {/* Small logo at the top (left) */}
+                <img src={ozLogo} alt="OZ" className="lp-brandLogoSmall lp-pop" />
+                <div className="lp-navPill">
+                    <div className="lp-navItem" onClick={() => window.location.href = '/'}>HOME</div>
+                    <div className="lp-navItem" onClick={() => window.location.href = '/'}>PROJECTS</div>
+                    <div className="lp-navItem" onClick={() => window.location.href = '/'}>PROCESS</div>
+                    <div className="lp-navItem" onClick={() => window.location.href = '/'}>CONTACT</div>
+                    <div className="lp-navItem" onClick={() => scrollToSection('about-section')}>ABOUT US</div>
+                </div>
+                {/* 2x2 grid icon */}
+                <div className="lp-gridWrap lp-pop" onClick={toggleDarkMode}>
+                    <span className="lp-gridSquare-top-left" />
+                    <span className="lp-gridSquare-top-right" />
+                    <span className="lp-gridSquare-bottom-left" />
+                    <span className="lp-gridSquare-bottom-right" />
+                </div>
+            </div>
 
             {/* 2. Engaging Introduction Content */}
             <section className="about-intro-section">
@@ -53,7 +54,7 @@ const AboutUsPage = () => {
                     <p className="intro-subtitle">
                         We are <b>OnetoZ:</b> Digital Growth Partners dedicated to turning bold visions into measurable business results for businesses in Tamil Nadu. Our philosophy is simple: **Minimal Design, Maximal Impact**.
                     </p>
-                    
+
                     <div className="value-cards">
                         <div className="value-card">
                             <span className="card-icon">🎯</span>
@@ -72,14 +73,14 @@ const AboutUsPage = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 {/* Image Placeholder inspired by your reference images (Mygom/Better Invest engaging layouts) */}
                 <div className="intro-image-container">
-                     {/*  */}
-                     <p className="image-caption">The OnetoZ team in action, Coimbatore, TN.</p>
+                    <img src={teamOnetoz} alt="Team OnetoZ" className="intro-image" />
+                    <p className="image-caption">The OnetoZ team in action, Coimbatore, TN.</p>
                 </div>
             </section>
-            
+
             <hr className="divider" />
 
             {/* 3. The Animated Team Showcase */}
@@ -88,11 +89,11 @@ const AboutUsPage = () => {
                 <p className="team-section-subtitle">
                     The passionate minds blending strategy, design, and code to build your Growth Engine. Scroll to meet the team.
                 </p>
-                <ProfileSection /> 
+                <ProfileSection />
             </section>
 
             {/* 4. Enhanced Footer */}
-            <Footer />
+            <Footer isDarkMode={isDarkMode} />
         </div>
     );
 };

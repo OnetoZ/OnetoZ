@@ -107,7 +107,7 @@ const ProjectCard = ({ project, onClick, index }) => {
 
 
 // --- Main Project Component ---
-const ProjectSection = () => {
+const ProjectSection = ({ isDarkMode }) => {
     const [selectedProject, setSelectedProject] = useState(null);
 
     const handleProjectClick = (project) => {
@@ -115,7 +115,7 @@ const ProjectSection = () => {
     };
 
     return (
-        <div className="app-container">
+        <div className={`app-container ${isDarkMode ? 'dark-theme' : ''}`}>
             <div className="projects-section">
 
                 {/* Header Section (Replicated from reference) */}
@@ -210,10 +210,17 @@ const ProjectSection = () => {
                     font-family: 'Inter', sans-serif;
                     background-color: #FFF9EA; 
                     color: ${ACCENT_COLOR_DARK};
+                    transition: background-color 0.4s, color 0.4s;
+                }
+
+                .app-container.dark-theme {
+                    background-color: transparent;
+                    color: #FFF9EA;
                 }
 
                 .app-container {
                     min-height: 100vh;
+                    transition: background-color 0.4s;
                 }
 
                 /* Section Layout */
@@ -234,12 +241,22 @@ const ProjectSection = () => {
                     margin-bottom: 10px;
                     color: #000000;
                     letter-spacing: -1px;
+                    transition: color 0.4s;
+                }
+
+                .dark-theme .header-title {
+                    color: #FFF9EA;
                 }
 
                 .header-subtitle {
                     font-size: 24px;
                     font-weight: 500;
                     color: #4b5563;
+                    transition: color 0.4s;
+                }
+
+                .dark-theme .header-subtitle {
+                    color: #9CA3AF;
                 }
 
                 /* Cards Grid */
@@ -281,9 +298,20 @@ const ProjectSection = () => {
                     position: relative;
                     overflow: hidden;
                     border: 2px solid ${PRIMARY_COLOR_LIGHT}; /* Subtle border */
-                    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s;
+                    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
                     z-index: 10;
                     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+                }
+
+                .dark-theme .project-card {
+                    background-color: #1A1A1A;
+                    border-color: rgba(255, 255, 255, 0.05);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+                }
+                
+                .dark-theme .project-card-outer:hover .project-card {
+                    border-color: ${PRIMARY_COLOR_ACCENT};
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
                 }
                 
                 /* Hover effect on the card */
@@ -304,12 +332,22 @@ const ProjectSection = () => {
                     font-size: 22px;
                     font-weight: 700;
                     color: ${ACCENT_COLOR_DARK};
+                    transition: color 0.4s;
+                }
+
+                .dark-theme .card-title {
+                    color: #FFF9EA;
                 }
 
                 .card-tagline {
                     font-size: 16px;
                     color: #6b7280;
                     margin-bottom: 20px;
+                    transition: color 0.4s;
+                }
+
+                .dark-theme .card-tagline {
+                    color: #9CA3AF;
                 }
                 
                 .card-cta {
@@ -320,15 +358,25 @@ const ProjectSection = () => {
                     padding: 8px 15px;
                     border-radius: 12px;
                     background-color: ${PRIMARY_COLOR_LIGHT};
-                    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+                    transition: all 0.3s ease;
                     display: flex;
                     align-items: center;
                 }
 
+                .dark-theme .card-cta {
+                    background-color: #222;
+                    color: ${PRIMARY_COLOR_ACCENT};
+                }
+
                 .project-card-outer:hover .card-cta {
                     background-color: ${PRIMARY_COLOR_ACCENT};
-                    color: ${CARD_BG};
+                    color: #FFF9EA;
                     transform: translateX(5px);
+                }
+
+                .dark-theme .project-card-outer:hover .card-cta {
+                    background-color: ${PRIMARY_COLOR_ACCENT};
+                    color: #111;
                 }
 
 
@@ -353,6 +401,12 @@ const ProjectSection = () => {
                     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
                     background-color: ${CARD_BG};
                     animation: fadeIn 0.3s ease-out;
+                    transition: background-color 0.4s;
+                }
+
+                .dark-theme .modal-content {
+                    background-color: #1A1A1A;
+                    color: #FFF9EA;
                 }
 
                 .modal-close {
@@ -376,6 +430,11 @@ const ProjectSection = () => {
                     font-weight: 800;
                     margin-bottom: 40px;
                     color: ${ACCENT_COLOR_DARK};
+                    transition: color 0.4s;
+                }
+
+                .dark-theme .modal-title {
+                    color: #FFF9EA;
                 }
 
                 .modal-items-grid {
@@ -388,11 +447,16 @@ const ProjectSection = () => {
                     padding: 24px;
                     border-radius: 12px;
                     background-color: #f7f7f7;
-                    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+                    transition: all 0.3s ease;
                     border: 1px solid #e5e7eb;
                     display: flex;
                     flex-direction: column;
                     gap: 10px;
+                }
+
+                .dark-theme .modal-item {
+                    background-color: #222;
+                    border-color: rgba(255, 255, 255, 0.05);
                 }
                 
                 .modal-item-featured {
@@ -426,11 +490,21 @@ const ProjectSection = () => {
                     font-size: 18px;
                     font-weight: 700;
                     color: ${ACCENT_COLOR_DARK};
+                    transition: color 0.4s;
+                }
+
+                .dark-theme .modal-item-name {
+                    color: #FFF9EA;
                 }
 
                 .modal-item-description {
                     font-size: 14px;
                     color: #666666;
+                    transition: color 0.4s;
+                }
+
+                .dark-theme .modal-item-description {
+                    color: #AAA;
                 }
 
                 .modal-item-footer {

@@ -6,12 +6,22 @@
   --profile-accent-color: #ff6b6b;
 }
 
+/* Dark Theme Variables */
+.dark-theme {
+  --profile-bg-color: #000000;
+  --profile-card-bg: #111111;
+  --profile-text-color: #E5E7EB;
+  --profile-title-color: #FFF9EA;
+  --profile-accent-color: #ff8e8e;
+}
+
 /* === SECTION & WRAPPER === */
 .profile-section {
   background-color: var(--profile-bg-color);
   padding: 0;
   position: relative;
   z-index: 1;
+  transition: background-color 0.4s;
 }
 
 .profile-list {
@@ -32,7 +42,7 @@
   background: var(--profile-card-bg);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   display: flex;
   gap: 60px;
   align-items: center;
@@ -45,13 +55,19 @@
   margin-bottom: 45vh;
   transform: scale(0.94);
   opacity: 0.4;
-  transition: transform .35s ease, opacity .35s ease, box-shadow .35s ease;
+  transition: transform .35s ease, opacity .35s ease, box-shadow .35s ease, background-color 0.4s, border-color 0.4s;
+  border: 1px solid transparent;
+}
+
+.dark-theme .profile-card {
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .profile-card.is-visible {
   transform: scale(1);
   opacity: 1;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
 /* === IMAGE === */
@@ -100,25 +116,28 @@
   font-size: 46px;
   letter-spacing: -0.5px;
   text-shadow: 2px 3px 2px rgba(0, 0, 0, 0.25);
-  white-space: nowrap; /* each line forced single line */
+  white-space: nowrap;
+  /* each line forced single line */
   position: relative;
   top: 10px;
 }
 
 /* Staggered stepped design */
 .role-line-1 {
-  color: #111;
+  color: var(--profile-title-color);
   left: 0;
   position: relative;
 }
+
 .role-line-2 {
   color: var(--profile-accent-color);
   left: 30px;
   position: relative;
   left: -0px;
 }
+
 .role-line-3 {
-  color: #111;
+  color: var(--profile-title-color);
   left: 60px;
   position: relative;
   left: 0px;
@@ -130,7 +149,7 @@
   font-weight: 700;
   font-size: 20px;
   letter-spacing: 0.3px;
-  color: #111;
+  color: var(--profile-title-color);
   margin-top: 12px;
   margin-bottom: 12px;
   position: relative;
@@ -145,7 +164,7 @@
   justify-content: flex-end;
   gap: 10px;
   margin-bottom: 20px;
-  color: #111;
+  color: var(--profile-text-color);
   font-size: 14px;
   position: relative;
   font-weight: 600;
@@ -160,7 +179,7 @@
   top: -40px;
 }
 
-.asterisk-1{
+.asterisk-1 {
   color: var(--profile-accent-color);
   font-weight: bold;
   font-size: 30px;
@@ -169,7 +188,7 @@
   left: 415px;
 }
 
-.portfolio-tagline{
+.portfolio-tagline {
   position: relative;
   left: 410px;
   top: -45px;
@@ -182,21 +201,20 @@
   right: -200px;
   top: -80%;
   height: 2px;
-  background: #111;
+  background: var(--profile-title-color);
   transform: translateY(-50%);
-  
 }
 
 /* === DESCRIPTION === */
 .profile-description {
   font-size: 18px;
   line-height: 1.6;
-  color: #111;
+  color: var(--profile-text-color);
   margin: 0 0 16px 0;
   max-width: 480px;
   font-weight: 400;
   font-family: "Inter", sans-serif;
-  border-left: 2px solid #111;
+  border-left: 2px solid var(--profile-title-color);
   padding-left: 24px;
   display: -webkit-box;
   -webkit-line-clamp: 4;
@@ -220,7 +238,7 @@
   width: 44px;
   height: 44px;
   border-radius: 6px;
-  border: 1px solid #000;
+  border: 1px solid var(--profile-title-color);
   background: transparent;
   display: flex;
   align-items: center;
@@ -228,6 +246,17 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35), 0 6px 14px rgba(0, 0, 0, 0.12);
+  color: var(--profile-title-color);
+  text-decoration: none;
+}
+
+.dark-theme .action-btn {
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.6), 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+.action-btn svg {
+  fill: currentColor;
+  /* Ensure SVG uses the set color */
 }
 
 .portfolio-text-btn {
