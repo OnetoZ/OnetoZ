@@ -21,11 +21,29 @@ const projects = [
                 description: 'Full stack web development for an e-commerce platform.',
                 category: 'Web',
                 isFeatured: true,
-                link: 'https://breezynapkins.com' // Added link
+                link: 'https://breezynapkins.com'
             },
-            // Remaining items are for category illustration
-            { name: 'Custom SaaS Solutions', description: 'Bespoke tools for business operations.', category: 'Web' },
-            { name: 'API Integrations', description: 'Secure and scalable third-party connections.', category: 'Web' },
+            {
+                name: 'Lumina',
+                description: 'A high-end portfolio website designed to convey elegance, luxury, and modern minimalism. It features a bespoke animated entrance, butter-smooth scrolling, and a carefully curated aesthetic similar to premium brands.',
+                category: 'Web',
+                isFeatured: true,
+                link: 'https://lumina-brand-assets.vercel.app/'
+            },
+            {
+                name: 'OopsArt',
+                description: 'A modern web platform for art enthusiasts to explore, share, and trade unique artworks. It combines the creativity and community aspects of social media with the functionality of an e-commerce platform to purchase or sell artworks seamlessly.',
+                category: 'Web',
+                isFeatured: true,
+                link: 'https://oopsartv2.netlify.app/'
+            },
+            {
+                name: 'RE:GEN!',
+                description: 'Welcome to RE:GEN! We are redefining refurbished tech for the next generation. Premium quality, transparent pricing, and sustainable vibes. 🌱✨',
+                category: 'Web',
+                isFeatured: true,
+                link: 'https://regen-laptop.vercel.app/'
+            }
         ]
     },
     {
