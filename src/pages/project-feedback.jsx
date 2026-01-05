@@ -176,40 +176,43 @@ const ProjectSection = ({ isDarkMode }) => {
                             Projects for: {selectedProject.title}
                         </h3>
 
-                        <div className="modal-items-grid">
-                            {selectedProject.items.map((item, idx) => (
-                                <div
-                                    key={idx}
-                                    className={`modal-item ${item.isFeatured ? 'modal-item-featured' : ''}`}
-                                >
-                                    <div className="modal-item-icon-wrapper">
-                                        {/* Use specific icons if desired, otherwise Globe is default */}
-                                        {selectedProject.icon}
-                                    </div>
-                                    <h4 className="modal-item-name">
-                                        {item.name}
-                                    </h4>
-                                    <p className="modal-item-description">
-                                        {item.description}
-                                    </p>
+                        <div className="modal-scroll-container">
+                            <div className="modal-items-grid">
+                                {selectedProject.items.map((item, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`modal-item ${item.isFeatured ? 'modal-item-featured' : ''}`}
+                                        style={{ '--item-index': idx }}
+                                    >
+                                        <div className="modal-item-icon-wrapper">
+                                            {/* Use specific icons if desired, otherwise Globe is default */}
+                                            {selectedProject.icon}
+                                        </div>
+                                        <h4 className="modal-item-name">
+                                            {item.name}
+                                        </h4>
+                                        <p className="modal-item-description">
+                                            {item.description}
+                                        </p>
 
-                                    <div className="modal-item-footer">
-                                        <span className="modal-item-category-tag">{item.category}</span>
+                                        <div className="modal-item-footer">
+                                            <span className="modal-item-category-tag">{item.category}</span>
 
-                                        {/* Conditionally Render Link Button */}
-                                        {item.link && (
-                                            <a
-                                                href={item.link}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="modal-item-link-btn"
-                                            >
-                                                Visit Website
-                                            </a>
-                                        )}
+                                            {/* Conditionally Render Link Button */}
+                                            {item.link && (
+                                                <a
+                                                    href={item.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="modal-item-link-btn"
+                                                >
+                                                    Visit Website
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -398,57 +401,113 @@ const ProjectSection = ({ isDarkMode }) => {
                 }
 
 
-                /* --- Modal Styles (Used for detailed view/click action) --- */
+                /* --- Modal Styles (Improved with Scrolling and Glassmorphism) --- */
                 .modal-overlay {
                     position: fixed;
                     inset: 0;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 16px;
-                    z-index: 50;
-                    background-color: rgba(0, 0, 0, 0.75);
+                    padding: 24px;
+                    z-index: 1000;
+                    background-color: rgba(0, 0, 0, 0.4);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    animation: fadeInOverlay 0.4s ease-out;
+                }
+
+                @keyframes fadeInOverlay {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
                 }
 
                 .modal-content {
-                    border-radius: 24px;
-                    padding: 40px;
-                    max-width: 800px;
+                    border-radius: 32px;
+                    padding: 48px;
+                    max-width: 900px;
                     width: 100%;
+                    max-height: 85vh;
                     position: relative;
-                    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 
+                                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
                     background-color: ${CARD_BG};
-                    animation: fadeIn 0.3s ease-out;
+                    animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
                     transition: background-color 0.4s;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                @keyframes modalSlideUp {
+                    from { opacity: 0; transform: translateY(40px) scale(0.98); }
+                    to { opacity: 1; transform: translateY(0) scale(1); }
                 }
 
                 .dark-theme .modal-content {
-                    background-color: #1A1A1A;
+                    background-color: #121212;
                     color: #FFF9EA;
+                    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5),
+                                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+                }
+
+                .modal-scroll-container {
+                    overflow-y: auto;
+                    padding-right: 12px;
+                    margin-right: -12px;
+                    flex: 1;
+                }
+
+                /* Custom Scrollbar for Modal */
+                .modal-scroll-container::-webkit-scrollbar {
+                    width: 6px;
+                }
+                .modal-scroll-container::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .modal-scroll-container::-webkit-scrollbar-thumb {
+                    background: rgba(163, 139, 87, 0.2);
+                    border-radius: 10px;
+                }
+                .modal-scroll-container::-webkit-scrollbar-thumb:hover {
+                    background: rgba(163, 139, 87, 0.4);
                 }
 
                 .modal-close {
                     position: absolute;
-                    top: 24px;
-                    right: 24px;
-                    padding: 8px;
-                    border-radius: 9999px;
-                    transition: background-color 0.2s;
-                    border: none;
-                    background: transparent;
+                    top: 28px;
+                    right: 28px;
+                    padding: 10px;
+                    border-radius: 12px;
+                    transition: all 0.3s ease;
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                    background: rgba(0, 0, 0, 0.03);
                     cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10;
+                }
+
+                .dark-theme .modal-close {
+                    background: rgba(255, 255, 255, 0.05);
+                    border-color: rgba(255, 255, 255, 0.1);
                 }
 
                 .modal-close:hover {
                     background-color: #f3f4f6;
+                    transform: rotate(90deg);
+                }
+
+                .dark-theme .modal-close:hover {
+                    background-color: #222;
                 }
 
                 .modal-title {
-                    font-size: 32px;
+                    font-size: 36px;
                     font-weight: 800;
-                    margin-bottom: 40px;
+                    margin-bottom: 32px;
                     color: ${ACCENT_COLOR_DARK};
                     transition: color 0.4s;
+                    letter-spacing: -1px;
                 }
 
                 .dark-theme .modal-title {
@@ -457,58 +516,81 @@ const ProjectSection = ({ isDarkMode }) => {
 
                 .modal-items-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
                     gap: 24px;
                 }
 
                 .modal-item {
-                    padding: 24px;
-                    border-radius: 12px;
-                    background-color: #f7f7f7;
-                    transition: all 0.3s ease;
-                    border: 1px solid #e5e7eb;
+                    padding: 28px;
+                    border-radius: 20px;
+                    background-color: #fafafa;
+                    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                    border: 1px solid #eeeeee;
                     display: flex;
                     flex-direction: column;
-                    gap: 10px;
+                    gap: 12px;
+                    opacity: 0;
+                    animation: itemFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                    animation-delay: calc(var(--item-index) * 0.1s + 0.2s);
+                }
+
+                @keyframes itemFadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
                 }
 
                 .dark-theme .modal-item {
-                    background-color: #222;
+                    background-color: #1a1a1a;
                     border-color: rgba(255, 255, 255, 0.05);
                 }
                 
                 .modal-item-featured {
                     background-color: ${PRIMARY_COLOR_LIGHT};
-                    border: 2px solid ${PRIMARY_COLOR_ACCENT};
+                    border: 1px solid ${PRIMARY_COLOR_ACCENT};
+                    box-shadow: 0 10px 20px rgba(163, 139, 87, 0.1);
                 }
+
+                .dark-theme .modal-item-featured {
+                    background-color: rgba(163, 139, 87, 0.1);
+                    border-color: ${PRIMARY_COLOR_ACCENT};
+                }
+
                 .modal-item-featured .modal-item-name {
                     color: ${PRIMARY_COLOR_ACCENT};
-                    text-shadow: 0 0 5px rgba(163, 139, 87, 0.5);
                 }
 
-
                 .modal-item:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                    transform: translateY(-8px);
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
                     border-color: ${PRIMARY_COLOR_ACCENT};
+                }
+
+                .dark-theme .modal-item:hover {
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
                 }
 
                 .modal-item-icon-wrapper {
                     background-color: ${PRIMARY_COLOR_LIGHT};
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 50%;
+                    width: 52px;
+                    height: 52px;
+                    border-radius: 14px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    margin-bottom: 10px;
+                    margin-bottom: 8px;
+                    transition: transform 0.3s ease;
+                }
+
+                .modal-item:hover .modal-item-icon-wrapper {
+                    transform: scale(1.1) rotate(5deg);
                 }
 
                 .modal-item-name {
-                    font-size: 18px;
+                    font-size: 20px;
                     font-weight: 700;
                     color: ${ACCENT_COLOR_DARK};
                     transition: color 0.4s;
+                    line-height: 1.2;
                 }
 
                 .dark-theme .modal-item-name {
@@ -516,9 +598,11 @@ const ProjectSection = ({ isDarkMode }) => {
                 }
 
                 .modal-item-description {
-                    font-size: 14px;
-                    color: #666666;
+                    font-size: 15px;
+                    line-height: 1.6;
+                    color: #555555;
                     transition: color 0.4s;
+                    margin-bottom: 12px;
                 }
 
                 .dark-theme .modal-item-description {
@@ -531,30 +615,42 @@ const ProjectSection = ({ isDarkMode }) => {
                     justify-content: space-between;
                     align-items: center;
                     flex-wrap: wrap;
-                    gap: 10px;
+                    gap: 12px;
                 }
                 
                 .modal-item-category-tag {
-                    font-size: 11px;
-                    font-weight: 600;
-                    padding: 4px 8px;
-                    border-radius: 4px;
-                    background-color: #e5e7eb;
-                    color: #4b5563;
-                }
-
-                .modal-item-link-btn {
                     font-size: 12px;
                     font-weight: 600;
                     padding: 6px 12px;
                     border-radius: 8px;
+                    background-color: rgba(0, 0, 0, 0.05);
+                    color: #555;
+                    letter-spacing: 0.5px;
+                }
+
+                .dark-theme .modal-item-category-tag {
+                    background-color: rgba(255, 255, 255, 0.05);
+                    color: #999;
+                }
+
+                .modal-item-link-btn {
+                    font-size: 13px;
+                    font-weight: 700;
+                    padding: 8px 16px;
+                    border-radius: 10px;
                     background-color: ${PRIMARY_COLOR_ACCENT};
                     color: #fff;
                     text-decoration: none;
-                    transition: background 0.2s;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    box-shadow: 0 4px 12px rgba(163, 139, 87, 0.2);
                 }
+
                 .modal-item-link-btn:hover {
                     background-color: #8a7548;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 15px rgba(163, 139, 87, 0.3);
                 }
 
                 @keyframes fadeIn {
