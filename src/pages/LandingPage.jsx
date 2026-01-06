@@ -36,6 +36,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
   const heroSectionRef = useRef(null);
   const scrollPositionRef = useRef(0); // Store scroll position
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 
 
@@ -69,7 +70,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
 
       // Background logo (moves very slow - 0.1x speed)
       if (heroBackgroundRef.current) {
-        heroBackgroundRef.current.style.transform = `translateY(${scrollY * 0.1}px)`;
+        heroBackgroundRef.current.style.transform = `translateX(-50%) translateY(${scrollY * 0.1}px)`;
       }
 
       // --- Scroll Reveal for Sections (can stay outside rAF for performance gain if only class toggle is used) ---
@@ -106,6 +107,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
   }, []); // Empty dependency array means this runs once on mount
 
   const scrollToSection = (sectionId) => {
+    setIsMobileMenuOpen(false); // Close mobile menu when navigating
     const element = document.getElementById(sectionId);
     if (element) {
       const offset = 80; // Height of fixed navbar
@@ -140,11 +142,45 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
           <div className="lp-navItem" onClick={() => scrollToSection('contact')}>CONTACT</div>
           <div className="lp-navItem" onClick={() => navigate('/about-us-page')}>ABOUT US</div>
         </div>
-        <div className="lp-gridWrap lp-pop" onClick={toggleDarkMode}>
+
+        {/* Desktop Theme Toggle */}
+        <div className="lp-gridWrap lp-pop lp-desktop-only" onClick={toggleDarkMode}>
           <span className="lp-gridSquare-top-left" />
           <span className="lp-gridSquare-top-right" />
           <span className="lp-gridSquare-bottom-left" />
           <span className="lp-gridSquare-bottom-right" />
+        </div>
+
+        {/* Mobile Hamburger Menu */}
+        <div
+          className={`lp-hamburger ${isMobileMenuOpen ? 'lp-hamburger-open' : ''}`}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`lp-mobile-menu ${isMobileMenuOpen ? 'lp-mobile-menu-open' : ''}`}>
+        <div className="lp-mobile-menu-content">
+          <div className="lp-mobile-nav-item" onClick={() => scrollToSection('home')}>HOME</div>
+          <div className="lp-mobile-nav-item" onClick={() => scrollToSection('projects')}>PROJECTS</div>
+          <div className="lp-mobile-nav-item" onClick={() => scrollToSection('process')}>PROCESS</div>
+          <div className="lp-mobile-nav-item" onClick={() => scrollToSection('contact')}>CONTACT</div>
+          <div className="lp-mobile-nav-item" onClick={() => { navigate('/about-us-page'); setIsMobileMenuOpen(false); }}>ABOUT US</div>
+
+          {/* Theme Toggle in Mobile Menu */}
+          <div className="lp-mobile-theme-toggle" onClick={toggleDarkMode}>
+            <div className="lp-gridWrap lp-pop">
+              <span className="lp-gridSquare-top-left" />
+              <span className="lp-gridSquare-top-right" />
+              <span className="lp-gridSquare-bottom-left" />
+              <span className="lp-gridSquare-bottom-right" />
+            </div>
+            <span>Toggle Theme</span>
+          </div>
         </div>
       </div>
 

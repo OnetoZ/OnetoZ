@@ -82,11 +82,42 @@ const TestimonialSection = ({ isDarkMode }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const autoScrollIntervalRef = useRef(null);
+  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
 
   // Ref to store the total rotation applied to the scroll track
   const totalRotationRef = useRef(0);
   // Ref to track the previous scroll position
   const lastScrollLeftRef = useRef(0);
+
+  // --- Auto-Scroll Logic for Mobile ---
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile && trackRef.current && !isAutoScrollPaused) {
+      // Start auto-scrolling
+      autoScrollIntervalRef.current = setInterval(() => {
+        if (trackRef.current && !isDragging) {
+          const track = trackRef.current;
+          const maxScroll = track.scrollWidth - track.clientWidth;
+
+          // Scroll by 1px every 20ms (smooth scrolling)
+          if (track.scrollLeft >= maxScroll) {
+            // Reset to beginning when reaching the end
+            track.scrollLeft = 0;
+          } else {
+            track.scrollLeft += 1;
+          }
+        }
+      }, 20);
+    }
+
+    return () => {
+      if (autoScrollIntervalRef.current) {
+        clearInterval(autoScrollIntervalRef.current);
+      }
+    };
+  }, [isDragging, isAutoScrollPaused]);
 
   // --- Drag Handlers ---
   const handleMouseDown = (e) => {
@@ -94,16 +125,21 @@ const TestimonialSection = ({ isDarkMode }) => {
     setStartX(e.clientX);
     setScrollLeft(trackRef.current.scrollLeft);
     e.currentTarget.style.cursor = 'grabbing';
+    setIsAutoScrollPaused(true); // Pause auto-scroll when dragging
   };
 
   const handleMouseLeave = (e) => {
     setIsDragging(false);
     e.currentTarget.style.cursor = 'grab';
+    // Resume auto-scroll after a delay
+    setTimeout(() => setIsAutoScrollPaused(false), 1000);
   };
 
   const handleMouseUp = (e) => {
     setIsDragging(false);
     e.currentTarget.style.cursor = 'grab';
+    // Resume auto-scroll after a delay
+    setTimeout(() => setIsAutoScrollPaused(false), 1000);
   };
 
   const handleMouseMove = (e) => {
@@ -114,32 +150,28 @@ const TestimonialSection = ({ isDarkMode }) => {
     trackRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  // --- ROLLING TIRE ANIMATION LOGIC (FIX) ---
+  // Touch handlers for mobile
+  const handleTouchStart = () => {
+    setIsAutoScrollPaused(true);
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => setIsAutoScrollPaused(false), 1000);
+  };
+
+  // Pause on hover (desktop)
+  const handleMouseEnter = () => {
+    setIsAutoScrollPaused(true);
+  };
+
+  const handleMouseLeaveTrack = () => {
+    setTimeout(() => setIsAutoScrollPaused(false), 1000);
+  };
+
+  // --- REMOVED ROLLING TIRE ANIMATION LOGIC ---
+  // The user requested to remove rotation during scroll on mobile.
   const handleScroll = useCallback(() => {
-    const currentScrollLeft = trackRef.current.scrollLeft;
-
-    // Calculate how much the scroll position has changed
-    const scrollDelta = currentScrollLeft - lastScrollLeftRef.current;
-
-    // A multiplier to tune the speed of rotation relative to the scroll distance.
-    // Negative sign because scrolling right (positive delta) means the box should rotate clockwise (negative Z rotation).
-    const rotationMultiplier = -0.08;
-
-    // Update the total rotation
-    totalRotationRef.current += scrollDelta * rotationMultiplier;
-
-    // Apply the rotation to all card containers
-    const cards = trackRef.current.querySelectorAll('.testimonial-card');
-    cards.forEach(card => {
-      // We use the initial rotation stored in the CSS variable (which accounts for the wavy look)
-      // and add the dynamic rolling rotation.
-      const initialRotation = parseFloat(card.dataset.initialRotation || 0);
-      card.style.transform = `rotateZ(${initialRotation + totalRotationRef.current}deg)`;
-    });
-
-    // Update the last scroll position
-    lastScrollLeftRef.current = currentScrollLeft;
-
+    // Rotation logic removed as requested.
   }, []);
 
   useEffect(() => {
@@ -212,32 +244,30 @@ const TestimonialSection = ({ isDarkMode }) => {
           onMouseLeave={handleMouseLeave}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onMouseEnter={handleMouseEnter}
         >
-          {allTestimonials.map((t, i) => {
-            const initialRotation = initialRotations[i % initialRotations.length];
-            return (
+          {allTestimonials.map((t, i) => (
+            <div
+              key={i}
+              className="card-container"
+              style={{ '--animation-delay': `${i * 0.05}s` }}
+            >
               <div
-                key={i}
-                className="card-container"
-                style={{ '--animation-delay': `${i * 0.05}s` }}
+                className={`testimonial-card card-color-${(i % 4) + 1}`}
               >
-                <div
-                  className={`testimonial-card card-color-${(i % 4) + 1}`}
-                  data-initial-rotation={initialRotation}
-                  style={{ transform: `rotateZ(${initialRotation}deg)` }}
-                >
-                  <div className="testimonial-quote">"{t.quote}"</div>
-                  <div className="testimonial-meta">
-                    <img className="testimonial-avatar" src={t.avatar} alt={t.name} />
-                    <div className="testimonial-info">
-                      <div className="testimonial-name">{t.name}</div>
-                      <div className="testimonial-role">{t.role}</div>
-                    </div>
+                <div className="testimonial-quote">"{t.quote}"</div>
+                <div className="testimonial-meta">
+                  <img className="testimonial-avatar" src={t.avatar} alt={t.name} />
+                  <div className="testimonial-info">
+                    <div className="testimonial-name">{t.name}</div>
+                    <div className="testimonial-role">{t.role}</div>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -378,12 +408,17 @@ const TestimonialSection = ({ isDarkMode }) => {
         .dark-theme .card-color-2 { background: #3D2428; }
         .dark-theme .card-color-3 { background: #1B311D; }
         .dark-theme .card-color-4 { background: #1A2B3D; }        
-        /* Hover Effect: LIFT UP and STRAIGHTEN */
-        .testimonial-card:hover { 
-            /* This is the fix: Override the ongoing dynamic rotation and apply a static, lifted transform */
-            transform: rotateZ(0deg) scale(1.05) translateY(-10px) !important; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-            z-index: 100 !important; 
+        /* Hover and Active State: Scale up slightly */
+        .testimonial-card:hover,
+        .card-container.is-visible .testimonial-card { 
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            z-index: 100; 
+        }
+
+        .testimonial-card:hover {
+            transform: scale(1.08) translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
         }
         
         /* --- Inner Card Content --- */
@@ -426,12 +461,15 @@ const TestimonialSection = ({ isDarkMode }) => {
         @media (max-width: 768px) {
           .feedback-title { font-size: 40px; }
           .feedback-header-content { padding-bottom: 50px; }
-          .feedback-section { padding-top: 100px; }
+          .feedback-section { padding-top: 100px; padding-bottom: 80px; }
           .card-container { margin-right: -20px; }
           .card-container:first-child { margin-left: 10px; }
           .card-container:last-child { margin-right: 30px; }
-          .testimonial-card { width: 280px; height: 280px; padding: 25px 20px; }
-          .testimonial-quote { font-size: 18px; line-height: 1.4; }
+          .testimonial-card { width: 260px; height: 260px; padding: 24px 18px; }
+          .testimonial-quote { font-size: 16px; line-height: 1.4; }
+          .testimonial-avatar { width: 40px; height: 40px; }
+          .testimonial-name { font-size: 14px; }
+          .testimonial-role { font-size: 12px; }
         }
       `}</style>
     </div>

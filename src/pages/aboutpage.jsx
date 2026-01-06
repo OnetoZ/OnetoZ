@@ -10,7 +10,10 @@ import teamOnetoz from './about us image/team onetoz.jpeg'
 
 const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
     const navigate = useNavigate();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
     const scrollToSection = (sectionId) => {
+        setIsMobileMenuOpen(false); // Close mobile menu when navigating
         const element = document.getElementById(sectionId)
         if (element) {
             const offset = 80;
@@ -26,8 +29,7 @@ const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
 
     return (
         <div className={`about-us-page-wrapper ${isDarkMode ? 'dark-theme lp-dark-theme' : ''}`}>
-            {/* 1. Navigation Bar (As seen in your screenshots) */}
-            {/* <Navbar />  */}
+            {/* 1. Navigation Bar (Internal implementation to avoid import issues) */}
             <div className="lp-topBar lp-enter-up">
                 {/* Small logo at the top (left) */}
                 <img src={ozLogo} alt="OZ" className="lp-brandLogoSmall lp-pop" />
@@ -38,12 +40,45 @@ const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
                     <div className="lp-navItem" onClick={() => navigate('/')}>CONTACT</div>
                     <div className="lp-navItem" onClick={() => scrollToSection('about-section')}>ABOUT US</div>
                 </div>
-                {/* 2x2 grid icon */}
-                <div className="lp-gridWrap lp-pop" onClick={toggleDarkMode}>
+
+                {/* Desktop Theme Toggle */}
+                <div className="lp-gridWrap lp-pop lp-desktop-only" onClick={toggleDarkMode}>
                     <span className="lp-gridSquare-top-left" />
                     <span className="lp-gridSquare-top-right" />
                     <span className="lp-gridSquare-bottom-left" />
                     <span className="lp-gridSquare-bottom-right" />
+                </div>
+
+                {/* Mobile Hamburger Menu */}
+                <div
+                    className={`lp-hamburger ${isMobileMenuOpen ? 'lp-hamburger-open' : ''}`}
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <div className={`lp-mobile-menu ${isMobileMenuOpen ? 'lp-mobile-menu-open' : ''}`}>
+                <div className="lp-mobile-menu-content">
+                    <div className="lp-mobile-nav-item" onClick={() => { navigate('/'); setIsMobileMenuOpen(false); }}>HOME</div>
+                    <div className="lp-mobile-nav-item" onClick={() => { navigate('/'); setIsMobileMenuOpen(false); }}>PROJECTS</div>
+                    <div className="lp-mobile-nav-item" onClick={() => { navigate('/'); setIsMobileMenuOpen(false); }}>PROCESS</div>
+                    <div className="lp-mobile-nav-item" onClick={() => { navigate('/'); setIsMobileMenuOpen(false); }}>CONTACT</div>
+                    <div className="lp-mobile-nav-item" onClick={() => scrollToSection('about-section')}>ABOUT US</div>
+
+                    {/* Theme Toggle in Mobile Menu */}
+                    <div className="lp-mobile-theme-toggle" onClick={toggleDarkMode}>
+                        <div className="lp-gridWrap lp-pop">
+                            <span className="lp-gridSquare-top-left" />
+                            <span className="lp-gridSquare-top-right" />
+                            <span className="lp-gridSquare-bottom-left" />
+                            <span className="lp-gridSquare-bottom-right" />
+                        </div>
+                        <span>Toggle Theme</span>
+                    </div>
                 </div>
             </div>
 
@@ -101,4 +136,3 @@ const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
 };
 
 export default AboutUsPage;
-

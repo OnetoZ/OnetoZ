@@ -13,7 +13,7 @@ const ScrollStack = ({
   itemStackDistance = 30,
   stackPosition = '20%',
   scaleEndPosition = '10%',
-  baseScale = 0.9, 
+  baseScale = 0.9,
   useWindowScroll = false,
   onStackComplete
 }) => {
@@ -59,14 +59,15 @@ const ScrollStack = ({
 
     const { scrollTop, containerHeight } = getScrollData()
     const totalCards = cardsRef.current.length
-    
+    const isMobile = window.innerWidth < 768;
+
     // Get the absolute start position of the scrollable content
-    const stackStartAbsolute = stackStartRef.current 
-      ? getElementOffset(stackStartRef.current) 
+    const stackStartAbsolute = stackStartRef.current
+      ? getElementOffset(stackStartRef.current)
       : 0
-    
+
     const cardTransitionHeight = containerHeight
-    
+
     // Calculate scroll relative to the start of the sticky section
     let relativeScroll = Math.max(0, scrollTop - stackStartAbsolute)
 
@@ -76,10 +77,10 @@ const ScrollStack = ({
 
     // Which card should be active (0 to N-1)
     let activeCardIndex = Math.min(Math.floor(relativeScroll / cardTransitionHeight), totalCards - 1)
-    
+
     // Progress of the transition between activeCardIndex and activeCardIndex + 1 (0 to 1)
     let cardProgress = (relativeScroll % cardTransitionHeight) / cardTransitionHeight
-    
+
     cardsRef.current.forEach((card, i) => {
       if (!card) return
 
@@ -92,23 +93,24 @@ const ScrollStack = ({
         // Current active card: transitions out
         scale = 1 - ((1 - baseScale) * cardProgress)
         opacity = 1 - (0.6 * cardProgress)
-        translateY = -cardTransitionHeight * cardProgress * 0.15
+        translateY = -cardTransitionHeight * cardProgress * (isMobile ? 0.1 : 0.15)
+        zIndex = totalCards + 20
         zIndex = totalCards + 20
 
       } else if (i === activeCardIndex + 1) {
         // Next card: transitions in
-        translateY = cardTransitionHeight * (1 - cardProgress) * 0.15
+        translateY = cardTransitionHeight * (1 - cardProgress) * (isMobile ? 0.1 : 0.15)
         scale = baseScale + (1 - baseScale) * cardProgress
         opacity = 0.4 + (0.6 * cardProgress)
         zIndex = totalCards + 10
-        
+
       } else if (i < activeCardIndex) {
         // Past cards: positioned above and hidden
         translateY = -cardTransitionHeight * 2
         scale = baseScale
         opacity = 0
         zIndex = totalCards - i
-        
+
       } else {
         // Future cards: positioned below and hidden
         translateY = cardTransitionHeight * 2
@@ -127,13 +129,13 @@ const ScrollStack = ({
 
       // Apply transforms with improved positioning
       const transform = `translate(-50%, calc(-50% + ${translateY}px)) scale(${scale})`
-      
+
       card.style.transform = transform
       card.style.opacity = String(opacity)
       card.style.zIndex = String(Math.round(zIndex))
       card.style.visibility = opacity > 0 ? 'visible' : 'hidden'
       card.style.pointerEvents = i === activeCardIndex ? 'auto' : 'none'
-      
+
       lastTransformsRef.current.set(i, { transform, opacity, scale, translateY })
     })
 
@@ -157,10 +159,10 @@ const ScrollStack = ({
     const scroller = useWindowScroll ? window : scrollerRef.current
     if (!scroller) return
 
-    const cards = Array.from(document.querySelectorAll('.scroll-stack-card')).filter(card => 
+    const cards = Array.from(document.querySelectorAll('.scroll-stack-card')).filter(card =>
       stackStartRef.current?.contains(card)
     )
-    
+
     cardsRef.current = cards
 
     cards.forEach((card, i) => {
@@ -175,7 +177,7 @@ const ScrollStack = ({
       card.style.isolation = 'isolate'
       card.style.overflow = 'hidden'
       card.style.transition = 'none'
-      
+
       // Set initial state - only first card visible
       if (i === 0) {
         card.style.opacity = '1'
@@ -226,8 +228,8 @@ const ScrollStack = ({
   ])
 
   const childCount = Array.isArray(children) ? children.length : 1;
-  const innerHeightStyle = useWindowScroll 
-    ? { height: `${Math.max(childCount, 1) * 100}vh` } 
+  const innerHeightStyle = useWindowScroll
+    ? { height: `${Math.max(childCount, 1) * 100}vh` }
     : { height: 'auto' };
 
   return (

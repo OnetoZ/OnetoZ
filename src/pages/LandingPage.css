@@ -55,12 +55,11 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 50;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 29px;
-    padding: 10px 0;
+    padding: 20px 40px;
     background: transparent;
     transition: all 0.3s ease;
 }
@@ -167,6 +166,126 @@
     box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.1);
 }
 
+/* ================== HAMBURGER MENU (Mobile Only) ================== */
+.lp-hamburger {
+    display: none;
+    /* Hidden on desktop */
+    position: absolute;
+    right: 20px;
+    width: 30px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.lp-hamburger span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.lp-dark-theme .lp-hamburger span {
+    background: var(--color-primary);
+}
+
+/* Hamburger Animation to X */
+.lp-hamburger-open span:nth-child(1) {
+    transform: translateY(10.5px) rotate(45deg);
+}
+
+.lp-hamburger-open span:nth-child(2) {
+    opacity: 0;
+}
+
+.lp-hamburger-open span:nth-child(3) {
+    transform: translateY(-10.5px) rotate(-45deg);
+}
+
+/* ================== MOBILE MENU OVERLAY ================== */
+.lp-mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 320px;
+    height: 100vh;
+    background: var(--color-light-bg);
+    z-index: 1000;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.lp-dark-theme .lp-mobile-menu {
+    background: var(--color-card-bg);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.lp-mobile-menu-open {
+    right: 0;
+}
+
+.lp-mobile-menu-content {
+    padding: 100px 30px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lp-mobile-nav-item {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--color-primary);
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.lp-mobile-nav-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.lp-dark-theme .lp-mobile-nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.lp-mobile-theme-toggle {
+    margin-top: 30px;
+    padding: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.lp-dark-theme .lp-mobile-theme-toggle {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.lp-mobile-theme-toggle .lp-gridWrap {
+    position: relative;
+    right: auto;
+}
+
+/* Desktop Only Class */
+.lp-desktop-only {
+    display: grid;
+}
+
+
 /* ================== HERO SECTION (Sticky for Smooth Transition) ================== */
 .lp-hero {
     height: 100vh;
@@ -227,7 +346,10 @@
     height: auto;
     filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.5));
     position: absolute;
-    top: -150px;
+    top: 50px;
+    /* Moved down to avoid overlapping navigation */
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 2;
     opacity: 0.1;
     transition: transform 0.1s linear, filter var(--transition-speed), opacity var(--transition-speed);
@@ -579,11 +701,18 @@
     flex: 1.2;
     position: relative;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     cursor: pointer;
-    min-width: 500px;
+    min-width: 320px;
+    width: 100%;
+}
 
+@media (min-width: 1025px) {
+    .lp-videoContainer {
+        min-width: 500px;
+        justify-content: flex-start;
+    }
 }
 
 .lp-videoCard {
@@ -791,11 +920,43 @@
     .lp-navPill {
         gap: 16px;
         padding: 8px 16px;
+        display: none;
+        /* Hide desktop navigation on mobile */
     }
 
     .lp-navItem {
         font-size: 11px;
         padding: 4px 8px;
+    }
+
+    /* Show hamburger menu on mobile */
+    .lp-hamburger {
+        display: flex;
+    }
+
+    /* Hide desktop theme toggle on mobile */
+    .lp-desktop-only {
+        display: none !important;
+    }
+
+    .lp-brandLogoSmall {
+        width: 80px;
+        height: 80px;
+        left: 10px;
+    }
+
+    .lp-topBar {
+        padding: 15px 20px;
+    }
+
+    .lp-hero {
+        padding-top: 80px;
+    }
+
+    .lp-tagline {
+        font-size: 12px;
+        letter-spacing: 2px;
+        top: -60px;
     }
 
     .lp-ctaRow {
@@ -817,15 +978,18 @@
 
     .lp-quote {
         font-size: 10vw;
+        margin-top: -60px;
     }
 
     .lp-sub {
-        font-size: 16px;
+        font-size: 14px;
+        margin-top: 20px;
     }
 
     .lp-videoSection {
         flex-direction: column;
         gap: 40px;
+        padding: 60px 0;
     }
 
     .lp-videoContent,
@@ -837,5 +1001,17 @@
     .lp-differentiator-title,
     .lp-processTitle {
         font-size: 2rem;
+    }
+
+    .lp-differentiatorSection {
+        padding: 60px 0;
+    }
+
+    .lp-processSection {
+        padding: 60px 0;
+    }
+
+    .lp-container {
+        padding: 0 20px 60px;
     }
 }
