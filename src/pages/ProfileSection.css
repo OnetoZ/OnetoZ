@@ -33,10 +33,6 @@
   gap: 48px;
 }
 
-.profile-list-stacked {
-  padding-top: 120px;
-}
-
 /* === CARD === */
 .profile-card {
   background: var(--profile-card-bg);
@@ -51,12 +47,12 @@
   width: 100%;
   margin: 0 auto;
   position: sticky;
-  top: 80px;
-  margin-bottom: 45vh;
-  transform: scale(0.94);
-  opacity: 0.4;
-  transition: transform .35s ease, opacity .35s ease, box-shadow .35s ease, background-color 0.4s, border-color 0.4s;
-  border: 1px solid transparent;
+  top: 100px;
+  margin-bottom: 30vh;
+  transform: scale(0.95);
+  opacity: 0.6;
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .dark-theme .profile-card {
@@ -91,7 +87,6 @@
   justify-content: center;
   align-items: flex-start;
   position: relative;
-  left: -40px;
 }
 
 /* === 3-LINE ROLE HEADING === */
@@ -113,34 +108,23 @@
 .role-line-2,
 .role-line-3 {
   display: block;
-  font-size: 46px;
+  font-size: clamp(32px, 5vw, 46px);
   letter-spacing: -0.5px;
-  text-shadow: 2px 3px 2px rgba(0, 0, 0, 0.25);
+  line-height: 1;
   white-space: nowrap;
-  /* each line forced single line */
-  position: relative;
-  top: 10px;
 }
 
 /* Staggered stepped design */
 .role-line-1 {
   color: var(--profile-title-color);
-  left: 0;
-  position: relative;
 }
 
 .role-line-2 {
   color: var(--profile-accent-color);
-  left: 30px;
-  position: relative;
-  left: -0px;
 }
 
 .role-line-3 {
   color: var(--profile-title-color);
-  left: 60px;
-  position: relative;
-  left: 0px;
 }
 
 /* === GREETING === */
@@ -150,11 +134,7 @@
   font-size: 20px;
   letter-spacing: 0.3px;
   color: var(--profile-title-color);
-  margin-top: 12px;
-  margin-bottom: 12px;
-  position: relative;
-  left: 3px;
-  top: -220px;
+  margin: 15px 0;
 }
 
 /* === PORTFOLIO LINK === */
@@ -189,9 +169,7 @@
 }
 
 .portfolio-tagline {
-  position: relative;
-  left: 410px;
-  top: -45px;
+  font-size: 14px;
 }
 
 .profile-link::before {
@@ -207,22 +185,15 @@
 
 /* === DESCRIPTION === */
 .profile-description {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.6;
   color: var(--profile-text-color);
-  margin: 0 0 16px 0;
+  margin: 0 0 24px 0;
   max-width: 480px;
   font-weight: 400;
   font-family: "Inter", sans-serif;
-  border-left: 2px solid var(--profile-title-color);
-  padding-left: 24px;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  position: relative;
-  top: -60px;
-  left: 5px;
+  border-left: 3px solid var(--profile-title-color);
+  padding-left: 20px;
 }
 
 /* === ACTION BUTTONS === */
@@ -256,7 +227,6 @@
 
 .action-btn svg {
   fill: currentColor;
-  /* Ensure SVG uses the set color */
 }
 
 .portfolio-text-btn {
@@ -275,40 +245,71 @@
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
+  .profile-list {
+    padding: 40px 16px;
+    gap: 40px;
+  }
+
   .profile-card {
     flex-direction: column;
     text-align: center;
-    padding: 28px;
-    gap: 20px;
+    padding: 24px;
+    gap: 16px;
+    top: 90px;
+    margin-bottom: 20vh;
+    opacity: 1;
+    transform: scale(1);
   }
 
   .profile-content {
     align-items: center;
+    padding: 0;
   }
 
   .profile-image img {
-    width: 220px;
-    height: 300px;
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    aspect-ratio: 3/4;
   }
 
   .profile-role {
+    margin-bottom: 20px;
     width: 100%;
   }
 
   .role-line-1,
   .role-line-2,
   .role-line-3 {
-    font-size: 32px;
-    left: 0;
+    font-size: clamp(24px, 8vw, 32px);
+    white-space: normal;
   }
 
   .profile-greeting {
-    left: 0;
-    top: 0;
-    margin-top: 20px;
+    font-size: 18px;
+    margin: 10px 0;
+  }
+
+  .profile-description {
+    font-size: 15px;
+    padding-left: 0;
+    border-left: none;
+    text-align: center;
+    margin-bottom: 20px;
+    max-width: 100%;
+  }
+
+  .profile-link,
+  .portfolio-tagline,
+  .asterisk,
+  .asterisk-1,
+  .profile-link::before {
+    display: none;
   }
 
   .profile-actions {
+    flex-wrap: wrap;
     justify-content: center;
+    margin-top: 10px;
   }
 }
