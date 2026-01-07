@@ -538,13 +538,26 @@
     }
 
     .footer-btn {
-      width: 48%;
+      width: 100%;
       padding: 12px 0;
       font-size: 0.9em;
     }
 
     .cta-container {
       gap: 12px;
+      display: flex;
+      width: 100%;
+    }
+
+    /* Ensure specific styling for the anchor tag wrapping the button */
+    .cta-container a {
+      flex: 1;
+      display: block;
+    }
+
+    /* Target direct button children (like the "About Us" button) */
+    .cta-container>.footer-btn {
+      flex: 1;
     }
 
     .social-icon {
