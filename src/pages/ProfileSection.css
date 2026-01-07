@@ -253,9 +253,12 @@
   .profile-card {
     flex-direction: column;
     text-align: center;
-    padding: 24px;
-    gap: 16px;
-    top: 90px;
+    padding: 20px;
+    /* Reduced padding */
+    gap: 12px;
+    /* Reduced gap */
+    top: 60px;
+    /* Adjusted top offset */
     margin-bottom: 20vh;
     opacity: 1;
     transform: scale(1);
@@ -268,35 +271,44 @@
 
   .profile-image img {
     width: 100%;
-    max-width: 280px;
+    max-width: 180px;
+    /* Significantly reduced image size */
     height: auto;
     aspect-ratio: 3/4;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Lighter shadow */
   }
 
   .profile-role {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    /* Reduced margin */
     width: 100%;
   }
 
   .role-line-1,
   .role-line-2,
   .role-line-3 {
-    font-size: clamp(24px, 8vw, 32px);
+    font-size: clamp(20px, 6vw, 28px);
+    /* Slightly smaller fonts */
     white-space: normal;
+    line-height: 1.1;
   }
 
   .profile-greeting {
-    font-size: 18px;
-    margin: 10px 0;
+    font-size: 16px;
+    margin: 8px 0;
+    /* Reduced margin */
   }
 
   .profile-description {
-    font-size: 15px;
+    font-size: 14px;
     padding-left: 0;
     border-left: none;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    /* Reduced margin */
     max-width: 100%;
+    line-height: 1.5;
   }
 
   .profile-link,

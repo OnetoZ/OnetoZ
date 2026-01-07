@@ -481,58 +481,74 @@
 
 /* 2x2 Grid Container */
 .lp-pillarsGrid-2x2 {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  margin-top: 3rem;
-  padding: 0 1rem;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 2rem;
+    padding: 0 10px 0 10px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Tablet and up */
 @media (min-width: 768px) {
-  .lp-pillarsGrid-2x2 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    padding: 0 2rem;
-  }
+    .lp-pillarsGrid-2x2 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        padding: 0 2rem;
+    }
 }
 
 /* Large desktop */
 @media (min-width: 1200px) {
-  .lp-pillarsGrid-2x2 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3rem;
-    padding: 0;
-  }
+    .lp-pillarsGrid-2x2 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+        padding: 0;
+    }
 }
 
 /* Individual Pillar Card (New Style) */
 .lp-pillar-2x2 {
-  background: var(--color-light-bg);
-  border-radius: 16px;
-  padding: 1.5rem;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  max-width: 400px;
-  width: 100%;
+    background: var(--color-light-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 auto;
+    width: 100%;
+
+    /* Mobile Wow Factor: Initial State for Animation */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 @media (min-width: 768px) {
-  .lp-pillar-2x2 {
-    padding: 2rem;
-    max-width: none;
-  }
+    .lp-pillar-2x2 {
+        padding: 2rem;
+        max-width: none;
+    }
 }
 
 .lp-pillar-2x2:hover {
@@ -540,29 +556,99 @@
     box-shadow: 0 7px 0 rgba(0, 0, 0, 0.15), 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
+/* Restore Desktop/Base Definitions */
 .lp-pillarIcon-2x2 {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  min-height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .lp-pillarTitle-2x2 {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  color: var(--color-primary);
-  min-height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
 }
 
 .lp-pillarDesc-2x2 {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+}
+
+/* ================== MOBILE OPTIMIZATIONS (Max-Width 767px) ================== */
+/* "Wow Factor" & 2x2 Grid adjustments for Mobile */
+@media (max-width: 767px) {
+    .lp-pillarsGrid-2x2 {
+        gap: 12px;
+        padding: 0 12px;
+    }
+
+    .lp-pillar-2x2 {
+        padding: 1rem;
+        border-radius: 12px;
+        /* Animation Entry for Mobile */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .lp-pillarIcon-2x2 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        min-height: 2.5rem;
+        /* Icon Pop for Mobile */
+        animation: iconPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s backwards;
+    }
+
+    .lp-pillarTitle-2x2 {
+        font-size: 0.95rem;
+        min-height: 2.5rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+
+    .lp-pillarDesc-2x2 {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+        /* Standard property */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes iconPop {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* ========================================================================= */
@@ -934,17 +1020,17 @@
         margin-right: auto;
         padding: 0 1rem;
     }
-  
+
     .lp-pillar-2x2 {
         margin-bottom: 1rem;
     }
-  
+
     .lp-pillarTitle-2x2 {
         font-size: 1.1rem;
         min-height: auto;
         margin-bottom: 0.75rem;
     }
-  
+
     .lp-pillarIcon-2x2 {
         margin-bottom: 1rem;
     }
