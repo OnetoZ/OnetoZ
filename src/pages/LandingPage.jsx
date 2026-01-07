@@ -41,6 +41,25 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
 
 
   useEffect(() => {
+    // Disable browser scroll restoration
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Force scroll to top immediately and repeatedly to override browser behavior
+    const forceScrollTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      scrollPositionRef.current = 0;
+    };
+
+    // Call immediately
+    forceScrollTop();
+
+    // Call again after a short delay to ensure it takes effect
+    const timeoutId = setTimeout(forceScrollTop, 10);
+
     let ticking = false; // rAF flag to prevent multiple requests
 
     // --- FUNCTION TO APPLY TRANSFORMATIONS ---
@@ -103,7 +122,10 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
 
     window.addEventListener('scroll', onScroll, { passive: true }); // Use passive: true for performance
 
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(timeoutId);
+    };
   }, []); // Empty dependency array means this runs once on mount
 
   const scrollToSection = (sectionId) => {
@@ -311,7 +333,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
             <div className="lp-videoWrapper">
               <div className="lp-videoContainer lp-pop-in-stagger" style={{ animationDelay: '0.2s' }}>
                 <div className="lp-videoCard">
-                  <span className="lp-videoPlaceholderText">OnetoZ Case Study Preview - Click to Play</span>
+                  <span className="lp-videoPlaceholderText">OnetoZ Case Study Preview <br />Video coming soon</span>
                 </div>
               </div>
 
