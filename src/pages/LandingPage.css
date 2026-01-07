@@ -512,7 +512,7 @@
 /* Individual Pillar Card (New Style) */
 .lp-pillar-2x2 {
     background: var(--color-light-bg);
-    border-radius: 12px;
+    border-radius: 20px;
     padding: 1rem;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -533,7 +533,9 @@
 }
 
 .lp-dark-theme .lp-pillar-2x2 {
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    background-color: var(--color-card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes fadeInUp {
