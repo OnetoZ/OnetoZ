@@ -481,42 +481,58 @@
 
 /* 2x2 Grid Container */
 .lp-pillarsGrid-2x2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 40px;
-    grid-auto-rows: 1fr;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  padding: 0 1rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .lp-pillarsGrid-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 0 2rem;
+  }
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+  .lp-pillarsGrid-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    padding: 0;
+  }
 }
 
 /* Individual Pillar Card (New Style) */
 .lp-pillar-2x2 {
-    padding: 40px;
-    background-color: var(--color-light-bg);
-    /* Unique curved border style applied */
-    border-radius: 20px 50px 20px 20px;
-    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.15), 0 15px 30px rgba(0, 0, 0, 0.08);
-    /* Soft layered shadow */
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed), border-color var(--transition-speed);
-    height: 100%;
+  background: var(--color-light-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
 }
 
-.lp-dark-theme .lp-pillar-2x2 {
-    background-color: var(--color-card-bg);
-    border-color: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.5), 0 15px 30px rgba(0, 0, 0, 0.4);
-}
-
-.lp-pillar-2x2:nth-child(2) {
-    border-radius: 50px 20px 20px 20px;
-}
-
-.lp-pillar-2x2:nth-child(3) {
-    border-radius: 20px 20px 50px 20px;
-}
-
-.lp-pillar-2x2:nth-child(4) {
-    border-radius: 20px 20px 20px 50px;
+@media (min-width: 768px) {
+  .lp-pillar-2x2 {
+    padding: 2rem;
+    max-width: none;
+  }
 }
 
 .lp-pillar-2x2:hover {
@@ -525,22 +541,29 @@
 }
 
 .lp-pillarIcon-2x2 {
-    font-size: 3rem;
-    margin-bottom: 15px;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lp-pillarTitle-2x2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 10px;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lp-pillarDesc-2x2 {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--color-text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
 }
-
 
 /* ========================================================================= */
 /* CONTENT SECTION 2: Process (How We Work) */
@@ -613,7 +636,6 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     transform: translateY(-5px);
 }
-
 
 .lp-processNumber {
     position: absolute;
@@ -907,12 +929,24 @@
     /* Switch 2x2 grid to 1 column on smaller screens */
     .lp-pillarsGrid-2x2 {
         grid-template-columns: 1fr;
-        grid-auto-rows: auto;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 1rem;
     }
-
+  
     .lp-pillar-2x2 {
-        border-radius: 20px;
-        /* Simplify corners on mobile */
+        margin-bottom: 1rem;
+    }
+  
+    .lp-pillarTitle-2x2 {
+        font-size: 1.1rem;
+        min-height: auto;
+        margin-bottom: 0.75rem;
+    }
+  
+    .lp-pillarIcon-2x2 {
+        margin-bottom: 1rem;
     }
 }
 
