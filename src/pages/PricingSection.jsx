@@ -2,156 +2,156 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Check, Smartphone, Globe, Layers, ArrowRight } from 'lucide-react';
 
 const PricingCard = ({
-    title,
-    subtitle,
-    price,
-    features,
-    ctaText,
-    isHighlighted,
-    badge,
-    icon,
-    index
+  title,
+  subtitle,
+  price,
+  features,
+  ctaText,
+  isHighlighted,
+  badge,
+  icon,
+  index
 }) => {
-    return (
-        <div className={`pricing-card ${isHighlighted ? 'highlight-card' : ''}`} style={{ '--item-index': index }}>
-            {badge && (
-                <span className="card-badge">
-                    {badge}
-                </span>
-            )}
+  return (
+    <div className={`pricing-card ${isHighlighted ? 'highlight-card' : ''}`} style={{ '--item-index': index }}>
+      {badge && (
+        <span className="card-badge">
+          {badge}
+        </span>
+      )}
 
-            <div className="card-header-pricing">
-                <div className={`icon-container ${isHighlighted ? 'icon-highlighted' : ''}`}>
-                    {icon}
-                </div>
-                <h3 className="card-title-pricing">{title}</h3>
-                <p className="card-subtitle-pricing">{subtitle}</p>
-            </div>
-
-            <div className="price-container">
-                <div className="price-row">
-                    <span className="price-amount">{price}</span>
-                </div>
-                <p className="price-disclaimer">*Starting price, varies by features</p>
-            </div>
-
-            <ul className="features-list">
-                {features.map((feature, idx) => (
-                    <li key={idx} className="feature-item">
-                        <Check size={18} className="check-icon" />
-                        <span>{feature}</span>
-                    </li>
-                ))}
-            </ul>
-
-            <button className={`cta-button-pricing ${isHighlighted ? 'cta-highlighted' : ''}`}>
-                {ctaText}
-                <ArrowRight size={18} />
-            </button>
+      <div className="card-header-pricing">
+        <div className={`icon-container ${isHighlighted ? 'icon-highlighted' : ''}`}>
+          {icon}
         </div>
-    );
+        <h3 className="card-title-pricing">{title}</h3>
+        <p className="card-subtitle-pricing">{subtitle}</p>
+      </div>
+
+      <div className="price-container">
+        <div className="price-row">
+          <span className="price-amount">{price}</span>
+        </div>
+        <p className="price-disclaimer">*Starting price, varies by features</p>
+      </div>
+
+      <ul className="features-list">
+        {features.map((feature, idx) => (
+          <li key={idx} className="feature-item">
+            <Check size={18} className="check-icon" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      <button className={`cta-button-pricing ${isHighlighted ? 'cta-highlighted' : ''}`}>
+        {ctaText}
+        <ArrowRight size={18} />
+      </button>
+    </div>
+  );
 };
 
 const PricingSection = ({ isDarkMode }) => {
-    const scrollRef = useRef(null);
-    const sectionRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(1);
+  const scrollRef = useRef(null);
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(1);
 
-    const pricingData = [
-        {
-            title: "Static Website",
-            subtitle: "Perfect for small shops & local businesses",
-            price: "₹3,000",
-            features: ["Clean & fast website", "Mobile-friendly design", "Business info & contact page"],
-            ctaText: "Get a Simple Website",
-            icon: <Globe size={24} />
-        },
-        {
-            title: "Fullstack Website",
-            subtitle: "For growing businesses that need more",
-            price: "₹19,000",
-            features: ["Admin panel & login", "Dynamic content", "Scalable for future growth"],
-            ctaText: "Build My Website",
-            isHighlighted: true,
-            badge: "Most Chosen",
-            icon: <Layers size={24} />
-        },
-        {
-            title: "Mobile App",
-            subtitle: "For brands ready to go mobile-first",
-            price: "₹25,000",
-            features: ["Android app", "Modern UI", "Business-ready features"],
-            ctaText: "Discuss My App Idea",
-            icon: <Smartphone size={24} />
+  const pricingData = [
+    {
+      title: "Static Website",
+      subtitle: "Perfect for small shops & local businesses",
+      price: "₹3,000",
+      features: ["Clean & fast website", "Mobile-friendly design", "Business info & contact page"],
+      ctaText: "Get a Simple Website",
+      icon: <Globe size={24} />
+    },
+    {
+      title: "Fullstack Website",
+      subtitle: "For growing businesses that need more",
+      price: "₹19,000",
+      features: ["Admin panel & login", "Dynamic content", "Scalable for future growth"],
+      ctaText: "Build My Website",
+      isHighlighted: true,
+      badge: "Most Chosen",
+      icon: <Layers size={24} />
+    },
+    {
+      title: "Mobile App",
+      subtitle: "For brands ready to go mobile-first",
+      price: "₹25,000",
+      features: ["Android app", "Modern UI", "Business-ready features"],
+      ctaText: "Discuss My App Idea",
+      icon: <Smartphone size={24} />
+    }
+  ];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
         }
-    ];
+      },
+      { threshold: 0.15 }
+    );
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.15 }
-        );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-        if (sectionRef.current) observer.observe(sectionRef.current);
-        return () => observer.disconnect();
-    }, []);
+  useEffect(() => {
+    if (scrollRef.current && window.innerWidth < 768) {
+      const container = scrollRef.current;
+      const middleCard = container.children[1];
+      if (middleCard) {
+        const scrollPos = middleCard.offsetLeft - (container.offsetWidth / 2) + (middleCard.offsetWidth / 2);
+        container.scrollLeft = scrollPos;
+      }
+    }
+  }, []);
 
-    useEffect(() => {
-        if (scrollRef.current && window.innerWidth < 768) {
-            const container = scrollRef.current;
-            const middleCard = container.children[1];
-            if (middleCard) {
-                const scrollPos = middleCard.offsetLeft - (container.offsetWidth / 2) + (middleCard.offsetWidth / 2);
-                container.scrollLeft = scrollPos;
-            }
-        }
-    }, []);
+  return (
+    <section ref={sectionRef} className={`pricing-section-wrapper ${isVisible ? 'is-visible' : ''} ${isDarkMode ? 'dark-theme' : ''}`}>
+      <div className="pricing-container-main">
+        <div className="pricing-header">
+          <h2 className="pricing-main-title">
+            Simple Pricing. Real Results.
+          </h2>
+          <p className="pricing-main-subtitle">
+            Built for small businesses stepping into tech.
+          </p>
+        </div>
 
-    return (
-        <section ref={sectionRef} className={`pricing-section-wrapper ${isVisible ? 'is-visible' : ''} ${isDarkMode ? 'dark-theme' : ''}`}>
-            <div className="pricing-container-main">
-                <div className="pricing-header">
-                    <h2 className="pricing-main-title">
-                        Simple Pricing. Real Results.
-                    </h2>
-                    <p className="pricing-main-subtitle">
-                        Built for small businesses stepping into tech.
-                    </p>
-                </div>
+        <div className="cards-wrapper">
+          <div
+            ref={scrollRef}
+            className="pricing-cards-scroll"
+          >
+            {pricingData.map((data, index) => (
+              <PricingCard key={index} {...data} index={index} />
+            ))}
+          </div>
+        </div>
 
-                <div className="cards-wrapper">
-                    <div
-                        ref={scrollRef}
-                        className="pricing-cards-scroll"
-                    >
-                        {pricingData.map((data, index) => (
-                            <PricingCard key={index} {...data} index={index} />
-                        ))}
-                    </div>
-                </div>
+        <div className="trust-line">
+          <p>
+            Final pricing depends on features. We always suggest what’s best for your business — not what’s expensive.
+          </p>
+        </div>
 
-                <div className="trust-line">
-                    <p>
-                        Final pricing depends on features. We always suggest what’s best for your business — not what’s expensive.
-                    </p>
-                </div>
+        <div className="mobile-indicator">
+          {pricingData.map((_, i) => (
+            <div
+              key={i}
+              className={`indicator-dot ${activeIndex === i ? 'active' : ''}`}
+            />
+          ))}
+        </div>
+      </div>
 
-                <div className="mobile-indicator">
-                    {pricingData.map((_, i) => (
-                        <div
-                            key={i}
-                            className={`indicator-dot ${activeIndex === i ? 'active' : ''}`}
-                        />
-                    ))}
-                </div>
-            </div>
-
-            <style>{`
+      <style>{`
         .pricing-section-wrapper {
           padding: 100px 32px;
           background-color: #FFF9EA;
@@ -159,6 +159,7 @@ const PricingSection = ({ isDarkMode }) => {
           opacity: 0;
           transform: translateY(50px);
           transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          width: 100%;
         }
 
         .pricing-section-wrapper.is-visible {
@@ -463,16 +464,23 @@ const PricingSection = ({ isDarkMode }) => {
           .pricing-section-wrapper {
             padding: 80px 16px;
           }
+          .pricing-card {
+            flex: 0 0 calc(100vw - 32px);
+            min-width: 280px;
+            padding: 30px 20px;
+          }
           .pricing-cards-scroll {
             justify-content: flex-start;
+            gap: 16px;
+            padding: 20px 0;
           }
           .pricing-main-title {
             font-size: 32px;
           }
         }
       `}</style>
-        </section>
-    );
+    </section>
+  );
 };
 
 export default PricingSection;

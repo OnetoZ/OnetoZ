@@ -227,21 +227,17 @@ const ProjectSection = ({ isDarkMode }) => {
                     padding: 0;
                     box-sizing: border-box;
                 }
-                body {
-                    font-family: 'Inter', sans-serif;
-                    background-color: #FFF9EA; 
+                .app-container {
+                    min-height: 100vh;
+                    background-color: #FFF9EA;
                     color: ${ACCENT_COLOR_DARK};
                     transition: background-color 0.4s, color 0.4s;
+                    width: 100%;
                 }
 
                 .app-container.dark-theme {
-                    background-color: transparent;
+                    background-color: #000000;
                     color: #FFF9EA;
-                }
-
-                .app-container {
-                    min-height: 100vh;
-                    transition: background-color 0.4s;
                 }
 
                 /* Section Layout */

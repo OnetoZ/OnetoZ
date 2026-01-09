@@ -4,6 +4,7 @@ import './LandingPage.css'
 import Squares from '../components/Backgrounds/Squares'
 // NOTE: Assuming image files are available in the correct relative path
 import ozLogo from './image/OZ logo.png'
+import ThreeScene from '../components/Three'
 // Assuming onetoZLogo is not needed in the center anymore
 
 // Component Data for the Growth Pillars
@@ -29,6 +30,61 @@ const growthPillars = [
     desc: 'Our partnership is defined by your real business results and growth, moving beyond simple project completion metrics.',
   },
 ];
+
+
+// Internal Component for Typewriter Effect
+const Typewriter = ({ text }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setCount(0); // Reset on text change
+    const interval = setInterval(() => {
+      setCount((prev) => (prev >= text.length ? prev : prev + 1));
+    }, 50); // Typing speed
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <span>{text.substring(0, count)}<span style={{ borderRight: '2px solid rgba(255,255,255,0.8)', marginLeft: '2px', animation: 'blink 1s step-end infinite' }}></span></span>;
+};
+
+// Internal Component for Text Rotation
+const TextRotator = ({ phrases }) => {
+  const [index, setIndex] = useState(0);
+  const [fadeState, setFadeState] = useState('in'); // 'in', 'out'
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFadeState('out');
+      setTimeout(() => {
+        setIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+        setFadeState('in');
+      }, 600);
+    }, 3000); // Increased to 4s to allow typing to finish comfortably
+
+    return () => clearInterval(interval);
+  }, [phrases.length]);
+
+  const currentPhrase = phrases[index];
+  const isTypingPhrase = currentPhrase === "Design. Build. Grow. Repeat.";
+
+  return (
+    <div
+      className="lp-quote"
+      style={{
+        minHeight: '1.2em',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        transition: 'opacity 0.6s ease-in-out, transform 0.6s ease-in-out',
+        opacity: fadeState === 'in' ? 1 : 0,
+        transform: fadeState === 'in' ? 'translateY(0px)' : 'translateY(10px)',
+        willChange: 'opacity, transform'
+      }}
+    >
+      {isTypingPhrase ? <Typewriter text={currentPhrase} /> : currentPhrase}
+    </div>
+  );
+};
 
 export default function LandingPage({ isDarkMode, toggleDarkMode }) {
   const heroContentRef = useRef(null);
@@ -219,15 +275,31 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
           </div>
         )}
 
-        {/* OZ circle logo (Background Element) - Slower Parallax */}
+        {/* OZ circle logo (Background Element) */}
         <img
           src={ozLogo}
           alt="OZ"
           className="lp-logoHeroOZ lp-fade-in"
           ref={heroBackgroundRef}
-          // Added will-change for performance hint
-          style={{ animationDelay: '0.2s', willChange: 'transform' }}
+          style={{ animationDelay: '0.2s', preserveAspectRatio: 'xMidYMid meet' }}
         />
+
+        {/* 3D Fox Model Performance Overlay */}
+        {isDarkMode && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100vh',
+              zIndex: 9999,
+              pointerEvents: 'none'
+            }}
+          >
+            <ThreeScene modelPath="/models/fox/scene.gltf" />
+          </div>
+        )}
 
         <div className="lp-heroContent" ref={heroContentRef} style={{ willChange: 'transform, opacity' }}>
 
@@ -235,10 +307,17 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
             DIGITAL GROWTH PARTNERS FOR YOUR BUSINESSES
           </div>
 
-          {/* Massive Typography for WOW effect */}
-          <div className="lp-quote lp-letters" data-text="Connecting Minds, Creating Tomorrow">
-            {animateText('Design. Build. Grow. Repeat.')}
-          </div>
+
+          {/* Text Rotator for Hero Section */}
+          <TextRotator
+            phrases={[
+              "Connecting Minds. Creating Tomorrow.",
+              "Think Smart. Build Right.",
+              "Strategy First. Growth Always.",
+              "Simple by Design. Powerful by Impact.",
+              "Design. Build. Grow. Repeat."
+            ]}
+          />
 
           <div className="lp-sub lp-fade-in" style={{ animationDelay: '1.2s' }}>
             We don't just build stunning websites and apps; we build complete <b>Digital Growth Engines</b> designed for maximum local SEO, mobile performance, and measurable revenue <br />growth in your specific market.

@@ -324,6 +324,7 @@
     background-color: var(--color-light-bg);
     z-index: 20;
     /* Ensure this is above the hero when it scrolls up */
+    width: 100%;
 }
 
 .lp-heroContent {
@@ -875,7 +876,7 @@
 
 .lp-videoContent {
     flex: 1;
-    min-width: 380px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -890,6 +891,7 @@
     color: #111;
     transition: color 0.4s;
     letter-spacing: -1.5px;
+    word-wrap: break-word;
 }
 
 .lp-dark-theme .lp-video-title {

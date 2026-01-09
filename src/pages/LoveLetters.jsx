@@ -282,6 +282,7 @@ const TestimonialSection = ({ isDarkMode }) => {
           padding-top: 180px; /* Increased gap */
           padding-bottom: 120px;
           transition: background-color 0.4s, color 0.4s;
+          width: 100%;
         }
 
         .feedback-section.dark-theme {
@@ -325,8 +326,8 @@ const TestimonialSection = ({ isDarkMode }) => {
 
         /* --- Marquee/Scroll Container --- */
         .feedback-marquee-container {
-            width: 100vw; 
-            margin-left: calc(50% - 50vw); 
+            width: 100%; 
+            margin: 0; 
         }
 
         /* --- Scrollable Track with Fixed Rotation --- */
