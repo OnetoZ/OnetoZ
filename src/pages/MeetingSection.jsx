@@ -255,6 +255,7 @@ Best regards`;
           background-color: ${BODY_BG};
           padding: 120px 32px;
           min-height: 100vh;
+          width: 100%;
           /* Initial state for Scroll Reveal */
           opacity: 0;
           transition: opacity 0.5s ease, background-color 0.4s;

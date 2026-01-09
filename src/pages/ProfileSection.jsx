@@ -110,9 +110,9 @@ const ProfileSection = () => {
 
               <div className="profile-greeting">Hi, I'm {member.name}</div>
 
-              <div className="profile-link">
+              <div className="profile-link-container">
+                <div className="profile-line"></div>
                 <span className="asterisk">*</span>
-                <span className="asterisk-1">*</span>
                 <span className="portfolio-tagline">See my work in my Portfolio.</span>
               </div>
 

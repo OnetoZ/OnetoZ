@@ -138,49 +138,38 @@
 }
 
 /* === PORTFOLIO LINK === */
-.profile-link {
+.profile-link-container {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-bottom: 20px;
-  color: var(--profile-text-color);
-  font-size: 14px;
+  gap: 12px;
+  margin-bottom: 25px;
+  width: 100%;
   position: relative;
-  font-weight: 600;
-  font-family: "Inter", sans-serif;
+}
+
+.profile-line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--profile-title-color);
+  opacity: 0.8;
 }
 
 .asterisk {
   color: var(--profile-accent-color);
   font-weight: bold;
-  font-size: 30px;
-  position: relative;
-  top: -40px;
-}
-
-.asterisk-1 {
-  color: var(--profile-accent-color);
-  font-weight: bold;
-  font-size: 30px;
-  position: relative;
-  top: -40px;
-  left: 415px;
+  font-size: 24px;
+  line-height: 1;
+  margin-top: 4px;
+  /* Optical adjustment */
 }
 
 .portfolio-tagline {
+  font-family: "Courier New", monospace;
   font-size: 14px;
-}
-
-.profile-link::before {
-  content: "";
-  position: absolute;
-  left: 15px;
-  right: -200px;
-  top: -80%;
-  height: 2px;
-  background: var(--profile-title-color);
-  transform: translateY(-50%);
+  font-weight: 700;
+  color: var(--profile-text-color);
+  white-space: nowrap;
+  letter-spacing: 0.5px;
 }
 
 /* === DESCRIPTION === */
@@ -311,11 +300,10 @@
     line-height: 1.5;
   }
 
-  .profile-link,
+  .profile-link-container,
   .portfolio-tagline,
   .asterisk,
-  .asterisk-1,
-  .profile-link::before {
+  .profile-line {
     display: none;
   }
 
