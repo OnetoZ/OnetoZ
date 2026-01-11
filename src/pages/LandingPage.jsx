@@ -242,6 +242,11 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
 
       {/* Mobile Menu Overlay */}
       <div className={`lp-mobile-menu ${isMobileMenuOpen ? 'lp-mobile-menu-open' : ''}`}>
+        {/* Close Button Inside Mobile Menu */}
+        <div className="lp-mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
+          <span></span>
+          <span></span>
+        </div>
         <div className="lp-mobile-menu-content">
           <div className="lp-mobile-nav-item" onClick={() => scrollToSection('home')}>HOME</div>
           <div className="lp-mobile-nav-item" onClick={() => scrollToSection('projects')}>PROJECTS</div>
@@ -293,7 +298,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
               left: 0,
               width: '100%',
               height: '100vh',
-              zIndex: 9999,
+              zIndex: 15,
               pointerEvents: 'none'
             }}
           >
