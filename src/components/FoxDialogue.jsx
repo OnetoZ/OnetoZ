@@ -115,19 +115,26 @@ const FoxDialogue = ({ position, onHoverStart, onHoverEnd, onComplete }) => {
                     {/* CLOSE BUTTON */}
                     <button
                         onClick={onComplete}
+                        aria-label="Close Guide"
                         style={{
                             position: 'absolute',
-                            top: '5px',
-                            right: '10px',
-                            background: 'none',
-                            border: 'none',
+                            top: '-5px',
+                            right: '-5px',
+                            background: '#000',
+                            border: '2px solid #fff',
+                            borderRadius: '50%',
+                            width: '48px',
+                            height: '48px',
                             fontSize: '20px',
                             fontWeight: 'bold',
                             cursor: 'pointer',
-                            color: '#333',
-                            lineHeight: '1',
-                            padding: '0',
-                            zIndex: 10
+                            color: '#fff',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 10,
+                            boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
+                            pointerEvents: 'auto'
                         }}
                     >
                         ✕

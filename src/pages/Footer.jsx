@@ -45,7 +45,7 @@ export default function Footer({ isDarkMode }) {
       <div className="footer-container">
         {/* Section 1: Brand / Tagline */}
         <div className="footer-section footer-brand">
-          <h1 className="brand-logo">OnetoZ</h1>
+          <div className="brand-logo">OnetoZ</div>
           <p className="footer-tagline">
             <b>Digital Growth Partners</b> for Tamil Nadu Businesses.
             <br />
@@ -88,17 +88,17 @@ export default function Footer({ isDarkMode }) {
         {/* Section 3: Contact and Socials */}
         <div className="footer-section footer-contact-social">
           <h3>Get In Touch</h3>
-          <p>Email: <a href="mailto:OnetoZ@gmail.com" className="contact-link">onetoztechnologies@gmail.com</a></p>
-          <p>Phone: <a href="tel:+1234567890" className="contact-link">+91 9791985961</a></p>
+          <p>Email: <a href="mailto:onetoztechnologies@gmail.com" className="contact-link">onetoztechnologies@gmail.com</a></p>
+          <p>Phone: <a href="tel:+919791985961" className="contact-link">+91 9791985961</a></p>
 
           <div className="footer-social-icons">
-            <a href="https://linkedin.com/company/onetoz" target="_blank" rel="noopener noreferrer" className="social-icon">
+            <a href="https://linkedin.com/company/onetoz" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Follow OnetoZ Technologies on LinkedIn">
               <LinkedInIcon />
             </a>
-            <a href="https://github.com/OnetoZ" target="_blank" rel="noopener noreferrer" className="social-icon">
+            <a href="https://github.com/OnetoZ" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Follow OnetoZ Technologies on GitHub">
               <GithubIcon />
             </a>
-            <a href="https://instagram.com/OnetoZ" target="_blank" rel="noopener noreferrer" className="social-icon">
+            <a href="https://instagram.com/OnetoZ" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Follow OnetoZ Technologies on Instagram">
               <InstagramIcon />
             </a>
           </div>

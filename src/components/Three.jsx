@@ -325,9 +325,9 @@ const ThreeScene = ({ modelPath = '/models/fox/scene.gltf' }) => {
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
-            // BLUR EFFECT:
-            background: isBlurry ? 'rgba(0,0,0,0.6)' : 'transparent',
-            backdropFilter: isBlurry ? 'blur(8px)' : 'none',
+            // REMOVED BLUR FOR SEO: Keeping it transparent ensures search engines see content clearly
+            background: 'transparent',
+            backdropFilter: 'none',
             transition: 'all 1s ease'
         }}>
             <Canvas

@@ -229,7 +229,7 @@ const TestimonialSection = ({ isDarkMode }) => {
     <div className={`feedback-section ${isDarkMode ? 'dark-theme' : ''}`}>
       {/* Increased gap from previous section */}
       <div className="feedback-header-content">
-        <h1 className="feedback-title">Client Testimonials</h1>
+        <h2 className="feedback-title">Client Testimonials</h2>
         <p className="feedback-description">
           We cherish each customer message as a heartfelt vote of confidence. Your trust inspires our unwavering commitment to excellence and fuels our passion to exceed expectations.
         </p>
