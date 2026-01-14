@@ -212,7 +212,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
     <div className={`lp-page ${isDarkMode ? 'lp-dark-theme' : ''}`}>
       {/* TOP BAR - Moved container inside or managed separately */}
       <div className="lp-topBar lp-enter-up">
-        <img src={ozLogo} alt="OZ" className="lp-brandLogoSmall lp-pop" />
+        <img src={ozLogo} alt="OnetoZ - Digital Growth Partners" className="lp-brandLogoSmall lp-pop" />
         <div className="lp-navPill">
           <div className="lp-navItem" onClick={() => scrollToSection('home')}>HOME</div>
           <div className="lp-navItem" onClick={() => scrollToSection('projects')}>PROJECTS</div>
@@ -283,7 +283,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
         {/* OZ circle logo (Background Element) */}
         <img
           src={ozLogo}
-          alt="OZ"
+          alt="OnetoZ Digital Growth Engine Logo"
           className="lp-logoHeroOZ lp-fade-in"
           ref={heroBackgroundRef}
           style={{ animationDelay: '0.2s', preserveAspectRatio: 'xMidYMid meet' }}
@@ -308,9 +308,9 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
 
         <div className="lp-heroContent" ref={heroContentRef} style={{ willChange: 'transform, opacity' }}>
 
-          <div className="lp-tagline lp-fade-in" style={{ animationDelay: '0.6s' }}>
-            DIGITAL GROWTH PARTNERS FOR YOUR BUSINESSES
-          </div>
+          <h1 className="lp-tagline lp-fade-in" style={{ animationDelay: '0.6s' }}>
+            DIGITAL GROWTH PARTNERS & STARTUP TECH AGENCY IN COIMBATORE
+          </h1>
 
 
           {/* Text Rotator for Hero Section */}
@@ -325,7 +325,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
           />
 
           <div className="lp-sub lp-fade-in" style={{ animationDelay: '1.2s' }}>
-            We don't just build stunning websites and apps; we build complete <b>Digital Growth Engines</b> designed for maximum local SEO, mobile performance, and measurable revenue <br />growth in your specific market.
+            We don't just build stunning websites and apps; we build complete <b>Digital Growth Engines</b> designed for maximum local SEO, mobile performance, and measurable revenue growth for startups and small businesses in <b>Tamil Nadu</b>.
           </div>
 
           <div className="lp-ctaRow lp-fade-in" style={{ animationDelay: '1.5s' }}>
@@ -343,7 +343,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
           <div className="lp-container">
             <div className="lp-growthEngineText">
               <h2 className="lp-differentiator-title">
-                The Digital Growth Engine
+                The Digital Growth Engine for Your Business
               </h2>
               <p className="lp-differentiator-subtitle">
                 Turning your vision into measurable business results in Tamil Nadu.

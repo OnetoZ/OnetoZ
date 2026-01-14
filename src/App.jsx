@@ -63,6 +63,11 @@ export default function App() {
         <Routes>
           <Route path="/" element={<MainContent isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
           <Route path="/about-us-page" element={<AboutUsPage isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />} />
+          <Route path="*" element={<div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: isDarkMode ? '#000' : '#fff', color: isDarkMode ? '#fff' : '#000' }}>
+            <h1>404 - Page Not Found</h1>
+            <p>The page you are looking for does not exist.</p>
+            <a href="/" style={{ marginTop: '20px', color: '#ff9d00', textDecoration: 'none', fontWeight: 'bold' }}>Return Home</a>
+          </div>} />
         </Routes>
       </BrowserRouter>
     </div>

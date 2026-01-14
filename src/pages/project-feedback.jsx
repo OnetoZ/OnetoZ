@@ -138,7 +138,7 @@ const ProjectSection = ({ isDarkMode }) => {
 
                 {/* Header Section (Replicated from reference) */}
                 <div className="header">
-                    <h1 className="header-title">Our Capabilities</h1>
+                    <h2 className="header-title">Our Capabilities</h2>
                     <h2 className="header-subtitle">Empowering Brands Through Digital Innovation</h2>
                 </div>
 

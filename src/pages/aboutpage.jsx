@@ -32,7 +32,7 @@ const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
             {/* 1. Navigation Bar (Internal implementation to avoid import issues) */}
             <div className="lp-topBar lp-enter-up">
                 {/* Small logo at the top (left) */}
-                <img src={ozLogo} alt="OZ" className="lp-brandLogoSmall lp-pop" />
+                <img src={ozLogo} alt="OnetoZ - Digital Growth Partners" className="lp-brandLogoSmall lp-pop" />
                 <div className="lp-navPill">
                     <div className="lp-navItem" onClick={() => navigate('/')}>HOME</div>
                     <div className="lp-navItem" onClick={() => navigate('/')}>PROJECTS</div>
@@ -86,10 +86,10 @@ const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
             <section className="about-intro-section">
                 <div className="intro-content-container">
                     <h1 className="intro-title">
-                        Connecting Minds, <span className="highlight-text">Creating Tomorrow</span>
+                        Connecting Minds, <span className="highlight-text">Creating Digital Leaders in Coimbatore</span>
                     </h1>
                     <p className="intro-subtitle">
-                        We are <b>OnetoZ:</b> Digital Growth Partners dedicated to turning bold visions into measurable business results for businesses in Tamil Nadu. Our philosophy is simple: **Minimal Design, Maximal Impact**.
+                        We are <b>Onetoz Technologies:</b> A premier Startup Tech Agency in Coimbatore dedicated to turning bold visions into measurable business results. Our philosophy is simple: <b>Minimal Design, Maximal Impact</b>.
                     </p>
 
                     <div className="value-cards">
@@ -113,7 +113,7 @@ const AboutUsPage = ({ isDarkMode, toggleDarkMode }) => {
 
                 {/* Image Placeholder inspired by your reference images (Mygom/Better Invest engaging layouts) */}
                 <div className="intro-image-container">
-                    <img src={teamOnetoz} alt="Team OnetoZ" className="intro-image" />
+                    <img src={teamOnetoz} alt="The OnetoZ Team - Digital Growth Architects in Coimbatore, TN" className="intro-image" />
                     <p className="image-caption">The OnetoZ team in action, Coimbatore, TN.</p>
                 </div>
             </section>
