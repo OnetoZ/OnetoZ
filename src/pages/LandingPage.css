@@ -104,15 +104,18 @@
 }
 
 .lp-navItem {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 1px;
-    padding: 6px 12px;
+    padding: 10px 16px;
     border-radius: 999px;
     cursor: pointer;
     color: var(--color-secondary);
     user-select: none;
     transition: background 0.2s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
 }
 
 .lp-navItem:hover {
@@ -403,16 +406,17 @@
 }
 
 .lp-cta {
-    padding: 12px 30px;
+    padding: 14px 32px;
     border-radius: 12px;
     background: transparent;
     border: 1px solid rgba(0, 0, 0, 0.35);
     box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35), 0 6px 12px rgba(0, 0, 0, 0.1);
     font-size: 14px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     cursor: pointer;
-    min-width: 160px;
+    min-width: 180px;
+    min-height: 48px;
     transition: all 0.2s ease, border-color var(--transition-speed), box-shadow var(--transition-speed), color var(--transition-speed);
     color: var(--color-primary);
 }
