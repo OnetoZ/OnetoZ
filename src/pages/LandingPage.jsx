@@ -212,7 +212,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
     <div className={`lp-page ${isDarkMode ? 'lp-dark-theme' : ''}`}>
       {/* TOP BAR - Moved container inside or managed separately */}
       <div className="lp-topBar lp-enter-up">
-        <img src={ozLogo} alt="OnetoZ - Digital Growth Partners" className="lp-brandLogoSmall lp-pop" />
+        <img src={ozLogo} alt="OnetoZ Technologies - Digital Growth Partners" className="lp-brandLogoSmall lp-pop" />
         <div className="lp-navPill">
           <div className="lp-navItem" onClick={() => scrollToSection('home')}>HOME</div>
           <div className="lp-navItem" onClick={() => scrollToSection('projects')}>PROJECTS</div>
@@ -309,7 +309,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
         <div className="lp-heroContent" ref={heroContentRef} style={{ willChange: 'transform, opacity' }}>
 
           <h1 className="lp-tagline lp-fade-in" style={{ animationDelay: '0.6s' }}>
-            DIGITAL GROWTH PARTNERS & STARTUP TECH AGENCY IN COIMBATORE
+            Onetoz Technologies | Digital Growth Partners & Startup Tech Agency in Coimbatore
           </h1>
 
 
@@ -325,7 +325,7 @@ export default function LandingPage({ isDarkMode, toggleDarkMode }) {
           />
 
           <div className="lp-sub lp-fade-in" style={{ animationDelay: '1.2s' }}>
-            We don't just build stunning websites and apps; we build complete <b>Digital Growth Engines</b> designed for maximum local SEO, mobile performance, and measurable revenue growth for startups and small businesses in <b>Tamil Nadu</b>.
+            We build high-performance <strong>websites</strong>, <strong>mobile apps</strong>, and <strong>Digital Growth Engines</strong> designed for maximum local SEO and revenue growth for startups in <strong>Coimbatore</strong> and across <strong>Tamil Nadu</strong>.
           </div>
 
           <div className="lp-ctaRow lp-fade-in" style={{ animationDelay: '1.5s' }}>
